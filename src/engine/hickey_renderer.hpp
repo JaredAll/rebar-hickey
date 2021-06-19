@@ -23,7 +23,7 @@ namespace rebarhickey::engine
   {
   public:
   
-    HickeyRenderer( std::unique_ptr<SDL_Window, SDL_Window_Destroyer> win );
+    HickeyRenderer( std::unique_ptr<SDL_Window, utility::SDL_Window_Destroyer> win );
 
     std::shared_ptr<SDL_Texture> create_texture( std::string image_path );
 
@@ -69,8 +69,8 @@ namespace rebarhickey::engine
       }
     }
 
-    std::unique_ptr<SDL_Window, SDL_Window_Destroyer> window;
-    std::unique_ptr<SDL_Renderer, SDL_Renderer_Destroyer> renderer;
+    std::unique_ptr<SDL_Window, utility::SDL_Window_Destroyer> window;
+    std::unique_ptr<SDL_Renderer, utility::SDL_Renderer_Destroyer> renderer;
     std::map<std::string, std::shared_ptr<SDL_Texture>> textures;
   };
 

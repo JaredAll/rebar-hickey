@@ -10,6 +10,10 @@ using std::string;
 using std::cout;
 using std::endl;
 using rebarhickey::engine::HickeyRenderer;
+using rebarhickey::engine::utility::SDL_Renderer_Destroyer;
+using rebarhickey::engine::utility::SDL_Surface_Destroyer;
+using rebarhickey::engine::utility::SDL_Texture_Destroyer;
+using rebarhickey::engine::utility::SDL_Window_Destroyer;
 
 HickeyRenderer::HickeyRenderer( unique_ptr<SDL_Window, SDL_Window_Destroyer> win )
 {
@@ -39,7 +43,7 @@ shared_ptr<SDL_Texture> HickeyRenderer::create_texture( string image_path )
   else
   {
     texture = {
-      loadTexture( image_path, renderer.get() ),
+      utility::loadTexture( image_path, renderer.get() ),
       SDL_Texture_Destroyer()
     };
     textures.insert( make_pair( image_path, texture ) );

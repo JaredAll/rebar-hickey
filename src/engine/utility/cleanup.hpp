@@ -6,45 +6,49 @@
 #include <utility>
 #include <SDL.h>
 
-struct SDL_Rect_Destroyer
+namespace rebarhickey::engine::utility
 {
-void operator()( SDL_Rect* rect ) const
-  {
-    free( rect );
-  }  
-};
 
-struct SDL_Renderer_Destroyer
-{
-  void operator()( SDL_Renderer* renderer ) const
+  struct SDL_Rect_Destroyer
   {
-    SDL_DestroyRenderer( renderer );
-  }
-};
+    void operator()( SDL_Rect* rect ) const
+    {
+      free( rect );
+    }  
+  };
 
-struct SDL_Window_Destroyer
-{
-  void operator()( SDL_Window* window ) const
+  struct SDL_Renderer_Destroyer
   {
-    SDL_DestroyWindow( window );
-  }
-};
+    void operator()( SDL_Renderer* renderer ) const
+    {
+      SDL_DestroyRenderer( renderer );
+    }
+  };
 
-struct SDL_Texture_Destroyer
-{
-  void operator()( SDL_Texture* texture ) const
+  struct SDL_Window_Destroyer
   {
-    SDL_DestroyTexture( texture );
-  }
-};
+    void operator()( SDL_Window* window ) const
+    {
+      SDL_DestroyWindow( window );
+    }
+  };
 
-struct SDL_Surface_Destroyer
-{
-  void operator()( SDL_Surface* surface ) const
+  struct SDL_Texture_Destroyer
   {
-    SDL_FreeSurface( surface );
-  }
-};
+    void operator()( SDL_Texture* texture ) const
+    {
+      SDL_DestroyTexture( texture );
+    }
+  };
 
+  struct SDL_Surface_Destroyer
+  {
+    void operator()( SDL_Surface* surface ) const
+    {
+      SDL_FreeSurface( surface );
+    }
+  };
+
+}
 
 #endif

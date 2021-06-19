@@ -18,6 +18,7 @@ using rebarhickey::engine::Engine;
 using rebarhickey::engine::HickeyRenderer;
 using rebarhickey::engine::input::InputHandler;
 using rebarhickey::engine::input::InputEvent;
+using rebarhickey::engine::utility::SDL_Window_Destroyer;
 
 Engine::~Engine()
 {
