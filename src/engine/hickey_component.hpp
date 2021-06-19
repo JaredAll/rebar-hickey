@@ -6,32 +6,37 @@
 #include <iostream>
 #include "input_event.hpp"
 
-class Renderer;
-
-class HickeyComponent
+namespace rebarhickey::engine
 {
-public:
 
-  virtual void update() = 0;
+  class HickeyRenderer;
 
-  virtual void update( InputEvent& event ) = 0;
-
-  virtual bool accepting_input() = 0;
-
-  virtual int get_height() = 0;
-
-  virtual int get_width() = 0;
-
-  virtual ~HickeyComponent() = default;
-
-  virtual void accept_renderer( Renderer& renderer ) = 0;
-
-protected:
-
-  HickeyComponent()
+  class HickeyComponent
   {
-  }
+  public:
+
+    virtual void update() = 0;
+
+    virtual void update( input::InputEvent& event ) = 0;
+
+    virtual bool accepting_input() = 0;
+
+    virtual int get_height() = 0;
+
+    virtual int get_width() = 0;
+
+    virtual ~HickeyComponent() = default;
+
+    virtual void accept_renderer( HickeyRenderer& renderer ) = 0;
+
+  protected:
+
+    HickeyComponent()
+    {
+    }
   
-};
+  };
+
+}
 
 #endif

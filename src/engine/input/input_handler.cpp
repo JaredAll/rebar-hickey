@@ -5,6 +5,8 @@
 
 using std::unique_ptr;
 using std::make_unique;
+using rebarhickey::engine::input::InputHandler;
+using rebarhickey::engine::input::InputEvent;
 
 InputHandler::InputHandler()
 {

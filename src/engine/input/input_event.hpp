@@ -3,31 +3,36 @@
 
 #include "input_type.hpp"
 
-class InputEvent
+namespace rebarhickey::engine::input
 {
-public:
 
-  InputEvent( InputType current, InputType previous );
+  class InputEvent
+  {
+  public:
 
-  bool left_up() const;
+    InputEvent( InputType current, InputType previous );
 
-  bool right_up() const;
+    bool left_up() const;
 
-  bool down_up() const;
+    bool right_up() const;
 
-  bool up_up() const;
+    bool down_up() const;
 
-  bool enter_up() const;
+    bool up_up() const;
 
-  bool romeo_up() const;
+    bool enter_up() const;
 
-  bool escape() const;
+    bool romeo_up() const;
 
-private:  
+    bool escape() const;
 
-  InputType current_frame_input;
-  InputType previous_frame_input;
+  private:  
 
-};
+    InputType current_frame_input;
+    InputType previous_frame_input;
+
+  };
+
+}
 
 #endif

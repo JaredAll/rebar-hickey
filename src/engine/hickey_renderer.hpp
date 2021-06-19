@@ -16,59 +16,64 @@
 #include "easy_sdl.hpp"
 #include <map>
 
-class HickeyRenderer
+namespace rebarhickey::engine
 {
-public:
+
+  class HickeyRenderer
+  {
+  public:
   
-  HickeyRenderer( std::unique_ptr<SDL_Window, SDL_Window_Destroyer> win );
+    HickeyRenderer( std::unique_ptr<SDL_Window, SDL_Window_Destroyer> win );
 
-  std::shared_ptr<SDL_Texture> create_texture( std::string image_path );
+    std::shared_ptr<SDL_Texture> create_texture( std::string image_path );
 
-  std::shared_ptr<SDL_Texture> render_letter_texture( TTF_Font* font,
-                                                      char letter_singleton[],
-                                                      SDL_Color color);
+    std::shared_ptr<SDL_Texture> render_letter_texture( TTF_Font* font,
+                                                        char letter_singleton[],
+                                                        SDL_Color color);
   
-  template< typename T, typename = typename std::enable_if_t<
-                          std::is_base_of<HickeyComponent, T>::value>>
-  void render( std::vector<std::unique_ptr<T>>& components )
-  {
-    SDL_RenderClear( renderer.get() );
-
-    for( int i = 0; i < components.size(); i++ )
+    template< typename T, typename = typename std::enable_if_t<
+                            std::is_base_of<rebarhickey::engine::HickeyComponent, T>::value>>
+    void render( std::vector<std::unique_ptr<T>>& components )
     {
-      components.at( i ) -> accept_renderer( *this );
+      SDL_RenderClear( renderer.get() );
+
+      for( int i = 0; i < components.size(); i++ )
+      {
+        components.at( i ) -> accept_renderer( *this );
+      }
+
+      SDL_RenderPresent( renderer.get() );
     }
 
-    SDL_RenderPresent( renderer.get() );
-  }
-
-  template< typename T, typename = typename std::enable_if_t<
-                          std::is_base_of<RenderComponent, T>::value>>
-  void render_all( std::vector<std::unique_ptr<T>>& render_components )
-  {
-    for( size_t i = 0; i < render_components.size(); i++ )
+    template< typename T, typename = typename std::enable_if_t<
+                            std::is_base_of<RenderComponent, T>::value>>
+    void render_all( std::vector<std::unique_ptr<T>>& render_components )
     {
-      render_component( *render_components.at( i ) );
+      for( size_t i = 0; i < render_components.size(); i++ )
+      {
+        render_component( *render_components.at( i ) );
+      }
     }
-  }
 
-private:
+  private:
 
-  template< typename T >
-  void render_component( const T& renderComponent )
-  {
-    if( renderComponent.get_screen_location().is_visible() )
+    template< typename T >
+    void render_component( const T& renderComponent )
     {
-      renderTexture( renderComponent.getTexture().get(),
-                     renderer.get(),
-                     renderComponent.getDestination().get(),
-                     renderComponent.getClip().get() );  
+      if( renderComponent.get_screen_location().is_visible() )
+      {
+        renderTexture( renderComponent.getTexture().get(),
+                       renderer.get(),
+                       renderComponent.getDestination().get(),
+                       renderComponent.getClip().get() );  
+      }
     }
-  }
 
-  std::unique_ptr<SDL_Window, SDL_Window_Destroyer> window;
-  std::unique_ptr<SDL_Renderer, SDL_Renderer_Destroyer> renderer;
-  std::map<std::string, std::shared_ptr<SDL_Texture>> textures;
-};
+    std::unique_ptr<SDL_Window, SDL_Window_Destroyer> window;
+    std::unique_ptr<SDL_Renderer, SDL_Renderer_Destroyer> renderer;
+    std::map<std::string, std::shared_ptr<SDL_Texture>> textures;
+  };
+
+}
 
 #endif

@@ -30,5 +30,5 @@ clean:
 .DELETE_ON_ERROR:
 
 cscope:
-	cd ~/rebar/rebar-hickey && find . -name "*.hpp" > cscope.files && \
+	cd ~/rebar-hickey && find . -name "*.hpp" > cscope.files && \
 	find . -name "*.cpp" >> cscope.files && cscope -b -q -k -R

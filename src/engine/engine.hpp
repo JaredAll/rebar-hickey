@@ -10,77 +10,80 @@
 #ifndef JAREDALL_TETRIS_ENGINE
 #define JAREDALL_TETRIS_ENGINE
 
-class Engine
+namespace rebarhickey::engine
 {
-public:
-
-  ~Engine();
-
-  void initialize( int height, int width );
-
-  template< typename T, typename = typename std::enable_if_t<
-                          std::is_base_of<HickeyComponent, T>::value>>
-  void advance( std::vector<std::unique_ptr<T>>& components )
+  class Engine
   {
-    if( should_render )
+  public:
+
+    ~Engine();
+
+    void initialize( int height, int width );
+
+    template< typename T, typename = typename std::enable_if_t<
+                            std::is_base_of<HickeyComponent, T>::value>>
+    void advance( std::vector<std::unique_ptr<T>>& components )
     {
-      render_components( components );
+      if( should_render )
+      {
+        render_components( components );
+      }
+
+      input::InputEvent& event = process_input();
+
+      update_components( event, components );
     }
 
-    InputEvent& event = process_input();
+    void quit();
 
-    update_components( event, components );
-  }
+    bool peek_has_updated();
 
-  void quit();
+    HickeyRenderer& get_renderer();
 
-  bool peek_has_updated();
+  private:
 
-  HickeyRenderer& get_renderer();
-
-private:
-
-  template< typename T >
-  void render_components( std::vector<std::unique_ptr<T>>& components )
-  {
-    renderer -> render( components );
+    template< typename T >
+    void render_components( std::vector<std::unique_ptr<T>>& components )
+    {
+      renderer -> render( components );
   
-    frame_count++;
-    should_render = false;
-    should_update = true;
-  }
-
-  template< typename T >
-  void update_components( InputEvent& input_event,
-                          std::vector<std::unique_ptr<T>>& components )
-  {
-    for( auto& component : components )
-    {
-      if( should_update )
-      {
-        component -> update();
-      }
-      if( component -> accepting_input() )
-      {
-        component -> update( input_event );
-      }
+      frame_count++;
+      should_render = false;
+      should_update = true;
     }
-    has_updated = true;
-    should_update = false;
-  }
 
-  InputEvent& process_input();
+    template< typename T >
+    void update_components( input::InputEvent& input_event,
+                            std::vector<std::unique_ptr<T>>& components )
+    {
+      for( auto& component : components )
+      {
+        if( should_update )
+        {
+          component -> update();
+        }
+        if( component -> accepting_input() )
+        {
+          component -> update( input_event );
+        }
+      }
+      has_updated = true;
+      should_update = false;
+    }
 
-  void maintain_time();
+    input::InputEvent& process_input();
 
-  std::unique_ptr<InputHandler> input_handler;
-  std::unique_ptr<HickeyRenderer> renderer;
-  int current_scroll;
-  bool should_render;
-  bool should_update;
-  bool has_updated;
-  bool running;
-  int frame_count;
-};
+    void maintain_time();
+
+    std::unique_ptr<input::InputHandler> input_handler;
+    std::unique_ptr<HickeyRenderer> renderer;
+    int current_scroll;
+    bool should_render;
+    bool should_update;
+    bool has_updated;
+    bool running;
+    int frame_count;
+  };
+}
 
 #endif

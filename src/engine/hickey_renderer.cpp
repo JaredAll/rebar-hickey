@@ -9,6 +9,7 @@ using std::shared_ptr;
 using std::string;
 using std::cout;
 using std::endl;
+using rebarhickey::engine::HickeyRenderer;
 
 HickeyRenderer::HickeyRenderer( unique_ptr<SDL_Window, SDL_Window_Destroyer> win )
 {

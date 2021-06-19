@@ -1,16 +1,21 @@
-#ifndef JARED_ALL_TETRIS_INPUT_TYPE
-#define JARED_ALL_TETRIS_INPUT_TYPE
+#ifndef REBAR_HICKEY_ENGINE_INPUT_INPUT_TYPE
+#define REBAR_HICKEY_ENGINE_INPUT_INPUT_TYPE
 
-enum class InputType
+namespace rebarhickey::engine::input
 {
-  left,
-  right,
-  down,
-  enter,
-  romeo,  
-  escape,  
-  none,
-  up
-};
+
+  enum class InputType
+  {
+    left,
+    right,
+    down,
+    enter,
+    romeo,  
+    escape,  
+    none,
+    up
+  };
+
+}
 
 #endif

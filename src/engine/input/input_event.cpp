@@ -1,5 +1,7 @@
 #include "input_event.hpp"
 
+using rebarhickey::engine::input::InputEvent;
+
 InputEvent::InputEvent( InputType current, InputType previous )
   : current_frame_input( current ), previous_frame_input( previous )
 {}

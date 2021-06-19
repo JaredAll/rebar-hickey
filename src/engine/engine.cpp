@@ -3,6 +3,7 @@
 #include "SDL_timer.h"
 #include "SDL_video.h"
 #include "cleanup.hpp"
+#include "hickey_renderer.hpp"
 #include "input_type.hpp"
 #include "render_component.hpp"
 #include <iostream>
@@ -13,6 +14,10 @@ using std::unique_ptr;
 using std::make_unique;
 using std::thread;
 using std::vector;
+using rebarhickey::engine::Engine;
+using rebarhickey::engine::HickeyRenderer;
+using rebarhickey::engine::input::InputHandler;
+using rebarhickey::engine::input::InputEvent;
 
 Engine::~Engine()
 {
