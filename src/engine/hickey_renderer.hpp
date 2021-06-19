@@ -60,13 +60,10 @@ namespace rebarhickey::engine
     template< typename T >
     void render_component( const T& renderComponent )
     {
-      if( renderComponent.get_screen_location().is_visible() )
-      {
-        renderTexture( renderComponent.getTexture().get(),
-                       renderer.get(),
-                       renderComponent.getDestination().get(),
-                       renderComponent.getClip().get() );  
-      }
+      utility::renderTexture( renderComponent.getTexture().get(),
+                     renderer.get(),
+                     renderComponent.getDestination().get(),
+                     renderComponent.getClip().get() );  
     }
 
     std::unique_ptr<SDL_Window, utility::SDL_Window_Destroyer> window;
