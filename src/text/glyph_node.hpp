@@ -9,7 +9,9 @@ namespace rebarhickey::text
   class GlyphNode : public EditorNode
   {
   public:
-    
+
+    GlyphNode( std::vector<std::unique_ptr<Glyph>>& glyphs );
+
     std::vector<std::unique_ptr<EditorNode>> get_sub_nodes() override;
 
     EditorNode& get_parent() override;

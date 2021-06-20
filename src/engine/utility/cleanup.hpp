@@ -2,6 +2,7 @@
 #define CLEANUP_H
 
 #include "SDL_render.h"
+#include "SDL_ttf.h"
 #include "SDL_video.h"
 #include <utility>
 #include <SDL.h>
@@ -46,6 +47,14 @@ namespace rebarhickey::engine::utility
     void operator()( SDL_Surface* surface ) const
     {
       SDL_FreeSurface( surface );
+    }
+  };
+
+  struct TTF_Font_Destroyer
+  {
+    void operator()( TTF_Font* font ) const
+    {
+      TTF_CloseFont( font );
     }
   };
 

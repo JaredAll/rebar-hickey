@@ -6,6 +6,14 @@ using std::unique_ptr;
 
 namespace rebarhickey::text
 {
+  GlyphNode::GlyphNode( vector<unique_ptr<Glyph>>& param_glyphs )
+  {
+    for( auto& glyph : param_glyphs )
+    {
+      glyphs.push_back( std::move( glyph ) );
+    }
+  }
+
   vector<unique_ptr<EditorNode>> GlyphNode::get_sub_nodes()
   {
     return {};

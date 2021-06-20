@@ -29,9 +29,9 @@ namespace rebarhickey::text
   
     int get_y();
   
-    int get_h();
+    int get_h() const override;
   
-    int get_w();
+    int get_w() const override;
   
     void set_x( int x );
   

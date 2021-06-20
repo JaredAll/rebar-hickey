@@ -49,12 +49,12 @@ int Glyph::get_y()
   return y;
 }
   
-int Glyph::get_h()
+int Glyph::get_h() const
 {
   return h;
 }
   
-int Glyph::get_w()
+int Glyph::get_w() const
 {
   return w;
 }

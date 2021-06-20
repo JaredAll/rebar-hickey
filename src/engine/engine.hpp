@@ -7,8 +7,8 @@
 #include <SDL.h>
 #include <memory>
 
-#ifndef JAREDALL_TETRIS_ENGINE
-#define JAREDALL_TETRIS_ENGINE
+#ifndef REBARHICKEY_ENGINE
+#define REBARHICKEY_ENGINE
 
 namespace rebarhickey::engine
 {

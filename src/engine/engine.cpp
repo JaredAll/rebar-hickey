@@ -35,7 +35,7 @@ void Engine::initialize( int height, int width )
   }
 
   unique_ptr<SDL_Window, SDL_Window_Destroyer> win {
-    SDL_CreateWindow("Allengine",
+    SDL_CreateWindow("ReBAR Hickey",
                      SDL_WINDOWPOS_CENTERED,
                      SDL_WINDOWPOS_CENTERED,
                      width,
