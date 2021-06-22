@@ -29,9 +29,9 @@ namespace rebarhickey::engine
         render_components( components );
       }
 
-      input::InputEvent& event = process_input();
+      // input::InputEvent& event = process_input();
 
-      update_components( event, components );
+      // update_components( event, components );
     }
 
     void quit();
@@ -40,6 +40,9 @@ namespace rebarhickey::engine
 
     HickeyRenderer& get_renderer();
 
+    input::InputEvent& process_input();
+
+    
   private:
 
     template< typename T >
@@ -70,8 +73,6 @@ namespace rebarhickey::engine
       has_updated = true;
       should_update = false;
     }
-
-    input::InputEvent& process_input();
 
     void maintain_time();
 

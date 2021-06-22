@@ -1,6 +1,6 @@
 CXX = clang++
 SDL_INCLUDE = -I/usr/include/SDL2
-INC_INCLUDE = -Isrc -Isrc/engine -Isrc/engine/input -Isrc/engine/utility
+INC_INCLUDE = -Isrc -Isrc/engine -Isrc/text -Isrc/engine/input -Isrc/engine/utility
 CXX_FLAGS = -Werror -pedantic-errors -O0 -Wno-c++98-compat-pedantic -Wno-padded -std=c++17 -g $(SDL_INCLUDE) $(INC_INCLUDE)
 LINKER_FLAGS = -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf -lpthread
 OBJ_DIR = build
@@ -14,7 +14,8 @@ input_handler.o \
 main.o \
 glyph.o \
 glyph_node.o \
-glyph_alphabet.o)
+glyph_alphabet.o \
+hickey.o)
 
 VPATH = src:src/engine:src/engine/input:src/engine/utility:src/text
 
