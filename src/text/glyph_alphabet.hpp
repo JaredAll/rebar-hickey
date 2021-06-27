@@ -17,9 +17,15 @@ namespace rebarhickey::text
 
     std::unique_ptr<Glyph> get_char_as_glyph( char character );
 
+    int get_letter_h();
+    int get_letter_w();
+
   private:
 
     std::map<char, std::shared_ptr<SDL_Texture>> alphabet_map;
+
+    int letter_h;
+    int letter_w;
 
   };
 

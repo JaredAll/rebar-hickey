@@ -29,7 +29,7 @@ int Hickey::run()
   std::string path = "/home/jared/rebar-hickey/resources/OpenSans-Bold.ttf";
 
   std::shared_ptr<TTF_Font> font {
-    TTF_OpenFont( path.c_str(), 12 ),
+    TTF_OpenFont( path.c_str(), 24 ),
     TTF_Font_Destroyer()
   };
 
@@ -38,7 +38,7 @@ int Hickey::run()
     std::cout << "Error initializing font: " << TTF_GetError() << std::endl;
   }
   
-  std::string alphabet_chars = "0123456789TETRISYNtetris";
+  std::string alphabet_chars = "0123456789TETRISYNtetrisJA";
   SDL_Color white { 255, 255, 255 };
 
   std::map<char, std::shared_ptr<SDL_Texture>> texture_map;
@@ -57,7 +57,11 @@ int Hickey::run()
   std::unique_ptr<GlyphAlphabet> alphabet = std::make_unique<GlyphAlphabet>( texture_map );
   
   std::vector<std::unique_ptr<Glyph>> glyphs_y;
-  glyphs_y.push_back( std::move( alphabet -> get_char_as_glyph( 'Y' ) ) );
+  glyphs_y.push_back( std::move( alphabet -> get_char_as_glyph( 'J' ) ) );
+
+  std::unique_ptr<Glyph> a_glyph = alphabet -> get_char_as_glyph( 'A' );
+  a_glyph -> set_x( alphabet -> get_letter_w() );
+  glyphs_y.push_back( std::move( a_glyph ) );
 
   std::vector<std::unique_ptr<GlyphNode>> glyph_nodes_y;
   glyph_nodes_y.push_back( std::move( std::make_unique<GlyphNode>( glyphs_y ) ) );
