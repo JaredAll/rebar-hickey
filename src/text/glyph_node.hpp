@@ -3,6 +3,7 @@
 
 #include "editor_node.hpp"
 #include "glyph.hpp"
+#include <memory>
 
 namespace rebarhickey::text
 {
@@ -10,7 +11,7 @@ namespace rebarhickey::text
   {
   public:
 
-    GlyphNode( std::vector<std::unique_ptr<Glyph>>& glyphs );
+    GlyphNode( int row, int column, std::unique_ptr<Glyph> glyph );
 
     std::vector<std::unique_ptr<EditorNode>> get_sub_nodes() override;
 
@@ -30,9 +31,17 @@ namespace rebarhickey::text
     
     void accept_renderer( rebarhickey::engine::HickeyRenderer& renderer ) override;
 
+    int get_row() const;
+
+    int get_column() const;
+
+    const std::unique_ptr<Glyph>& get_glyph() const;
+
   private:
 
-    std::vector<std::unique_ptr<Glyph>> glyphs;
+    const int row;
+    const int column;
+    const std::unique_ptr<Glyph> glyph;
 
   };
 }

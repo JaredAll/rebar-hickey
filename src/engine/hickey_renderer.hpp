@@ -55,8 +55,6 @@ namespace rebarhickey::engine
       }
     }
 
-  private:
-
     template< typename T >
     void render_component( const T& renderComponent )
     {
@@ -69,7 +67,7 @@ namespace rebarhickey::engine
     std::unique_ptr<SDL_Window, utility::SDL_Window_Destroyer> window;
     std::unique_ptr<SDL_Renderer, utility::SDL_Renderer_Destroyer> renderer;
     std::map<std::string, std::shared_ptr<SDL_Texture>> textures;
-  };
+  };  
 
 }
 

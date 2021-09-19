@@ -1,0 +1,27 @@
+* Buffer Design
+  A buffer could be a collection of glyphs. There would be a special
+  glyph for line endings, file endings, etc. For a copy interaction,
+  the selected region of glyphs would be saved somewhere. Then, when
+  pasted into a different place, the glyphs could simply be inserted,
+  and the collection of glyphs would be rerendered. What collections
+  would be appropriate for a buffer?
+** vector
+   - insertions would be costly
+
+** linked list
+   - insertions would be cheap
+   - traversals could happen on a character implementation basis. If I
+     am the stopping point for the current command, set the curser to
+     me. Otherwise, forward the cursor item to the next character.
+     
+** gap buffer
+   - ease of lookup as with vector, ease of insertion as with linked list
+   - moving gap could be costly. How to implement?
+
+** rope
+   - basically just a fancy binary tree representation of a string
+   - more complicated than gap. Do the benefits allow for increase in
+     complexity?
+
+** something else (heap, tree)
+   

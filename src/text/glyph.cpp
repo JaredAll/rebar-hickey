@@ -9,7 +9,11 @@ Glyph::Glyph( int param_x,
               int param_h,
               int param_w,
               std::shared_ptr<SDL_Texture> param_texture )
-  : x( param_x ), y( param_y ), h( param_h ), w( param_w ), texture( param_texture )
+  : x( param_x ),
+    y( param_y ),
+    h( param_h ),
+    w( param_w ),
+    texture( param_texture )
 {
   calculate_destination();
 }

@@ -56,21 +56,30 @@ int Hickey::run()
 
   std::unique_ptr<GlyphAlphabet> alphabet = std::make_unique<GlyphAlphabet>( texture_map );
   
-  std::vector<std::unique_ptr<Glyph>> glyphs_y;
-  glyphs_y.push_back( std::move( alphabet -> get_char_as_glyph( 'J' ) ) );
+  std::unique_ptr<GlyphNode> j_node = std::make_unique<GlyphNode>(
+    0,
+    0,
+    std::move( alphabet -> get_char_as_glyph( 'J' ) )
+    );
 
-  std::unique_ptr<Glyph> a_glyph = alphabet -> get_char_as_glyph( 'A' );
-  a_glyph -> set_x( alphabet -> get_letter_w() );
-  glyphs_y.push_back( std::move( a_glyph ) );
+  std::unique_ptr<GlyphNode> a_node = std::make_unique<GlyphNode>(
+    0,
+    1,
+    std::move( alphabet -> get_char_as_glyph( 'A' ) )
+    );
 
   std::vector<std::unique_ptr<GlyphNode>> glyph_nodes_y;
-  glyph_nodes_y.push_back( std::move( std::make_unique<GlyphNode>( glyphs_y ) ) );
+  glyph_nodes_y.push_back( std::move( j_node ) );
+  glyph_nodes_y.push_back( std::move( a_node ) );
 
-  std::vector<std::unique_ptr<Glyph>> glyphs_n;
-  glyphs_n.push_back( std::move( alphabet -> get_char_as_glyph( 'N' ) ) );
+  std::unique_ptr<GlyphNode> n_node = std::make_unique<GlyphNode>(
+    1,
+    1,
+    std::move( alphabet -> get_char_as_glyph( 'N' ) )
+    );
 
   std::vector<std::unique_ptr<GlyphNode>> glyph_nodes_n;
-  glyph_nodes_n.push_back( std::move( std::make_unique<GlyphNode>( glyphs_n ) ) );
+  glyph_nodes_n.push_back( std::move( n_node ) );
 
   std::vector<std::vector<std::unique_ptr<GlyphNode>>> vector_of_nodes_2D;
   vector_of_nodes_2D.push_back( std::move( glyph_nodes_y ) );
