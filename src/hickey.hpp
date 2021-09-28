@@ -3,8 +3,14 @@
 
 #include <memory>
 #include "engine.hpp"
+#include "gap_buffer.hpp"
+#include "glyph_alphabet.hpp"
+#include "glyph_node.hpp"
 
 using rebarhickey::engine::Engine;
+using rebarhickey::text::GapBuffer;
+using rebarhickey::text::GlyphAlphabet;
+using rebarhickey::text::GlyphNode;
 
 namespace rebarhickey
 {
@@ -17,9 +23,12 @@ namespace rebarhickey
 
     int run();
 
+    std::vector<std::unique_ptr<GlyphNode>> nodify( const GapBuffer& gap_buffer );
+
   private:
 
     std::unique_ptr<Engine> engine;
+    std::unique_ptr<GlyphAlphabet> alphabet;
 
   };
 

@@ -1,10 +1,13 @@
 #include "hickey.hpp"
 #include "cleanup.hpp"
 #include "engine.hpp"
+#include "gap_buffer.hpp"
 #include "glyph_alphabet.hpp"
 #include "glyph_node.hpp"
 #include "input_event.hpp"
 #include <cmath>
+#include <cstddef>
+#include <memory>
 
 using rebarhickey::Hickey;
 using rebarhickey::engine::utility::TTF_Font_Destroyer;
@@ -13,14 +16,13 @@ using rebarhickey::text::Glyph;
 using rebarhickey::text::GlyphNode;
 using rebarhickey::engine::input::InputEvent;
 
+using std::vector;
+
 Hickey::Hickey()
 {
   engine = std::make_unique<Engine>();
   engine -> initialize( 500, 500 );
-}
 
-int Hickey::run()
-{
   if( TTF_Init() == -1 )
   {
     std::cout << "TTF_Init failed" << std::endl;
@@ -54,36 +56,25 @@ int Hickey::run()
                                                         white )));
   }
 
-  std::unique_ptr<GlyphAlphabet> alphabet = std::make_unique<GlyphAlphabet>( texture_map );
-  
-  std::unique_ptr<GlyphNode> j_node = std::make_unique<GlyphNode>(
-    0,
-    0,
-    std::move( alphabet -> get_char_as_glyph( 'J' ) )
-    );
+  alphabet = std::make_unique<GlyphAlphabet>( texture_map );
 
-  std::unique_ptr<GlyphNode> a_node = std::make_unique<GlyphNode>(
-    0,
-    1,
-    std::move( alphabet -> get_char_as_glyph( 'A' ) )
-    );
+}
 
-  std::vector<std::unique_ptr<GlyphNode>> glyph_nodes_y;
-  glyph_nodes_y.push_back( std::move( j_node ) );
-  glyph_nodes_y.push_back( std::move( a_node ) );
+int Hickey::run()
+{
+  std::unique_ptr<GapBuffer> gap_buffer = std::make_unique<GapBuffer>();
+  gap_buffer -> insert( 'J' );
+  gap_buffer -> insert( 'A' );
+  gap_buffer -> insert( '\n' );
+  gap_buffer -> insert( 'A' );
+  gap_buffer -> insert( 'A' );
 
-  std::unique_ptr<GlyphNode> n_node = std::make_unique<GlyphNode>(
-    1,
-    1,
-    std::move( alphabet -> get_char_as_glyph( 'N' ) )
-    );
-
-  std::vector<std::unique_ptr<GlyphNode>> glyph_nodes_n;
-  glyph_nodes_n.push_back( std::move( n_node ) );
+  std::unique_ptr<GapBuffer> gap_buffer_N = std::make_unique<GapBuffer>();
+  gap_buffer_N -> insert( 'N' );
 
   std::vector<std::vector<std::unique_ptr<GlyphNode>>> vector_of_nodes_2D;
-  vector_of_nodes_2D.push_back( std::move( glyph_nodes_y ) );
-  vector_of_nodes_2D.push_back( std::move( glyph_nodes_n ) );
+  vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );
+  vector_of_nodes_2D.push_back( nodify( *gap_buffer_N ) );
 
   int show_index = 0;
   while( true )
@@ -104,4 +95,39 @@ int Hickey::run()
   }
 
   return 0;
+}
+
+vector<std::unique_ptr<GlyphNode>> Hickey::nodify( const GapBuffer& gap_buffer )
+{
+  vector<char> text = gap_buffer.get_text();
+  int text_length = text.size();
+  vector<std::unique_ptr<GlyphNode>> glyph_nodes {};
+
+  int character_count = 0;
+  int row = 0;
+  int column = 0;
+
+  while( character_count < text_length )
+  {
+    char nodified_char = text.at( character_count );
+    if( nodified_char == '\n' )
+    {
+      row++;
+      column = 0;
+    }
+    else
+    {
+      std::unique_ptr<GlyphNode> glyph_node = std::make_unique<GlyphNode>(
+        row,
+        column,
+        std::move( alphabet -> get_char_as_glyph( nodified_char ) )
+        );
+
+      glyph_nodes.push_back( std::move( glyph_node ) );
+      column++;
+    }
+    character_count++;
+  }
+
+  return glyph_nodes;
 }

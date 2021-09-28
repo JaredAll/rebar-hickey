@@ -1,6 +1,8 @@
 #ifndef JAREDALL_REBAR_HICKEY_BUFFER
 #define JAREDALL_REBAR_HICKEY_BUFFER
 
+#include <vector>
+
 namespace rebarhickey::text
 {
   class GapBuffer
@@ -9,9 +11,13 @@ namespace rebarhickey::text
 
     GapBuffer();
 
+    void insert( char character );
+
+    std::vector<char> get_text() const;
+
   private:
 
-    std::vector<char> characters;
+    std::vector<char> text;
     
   };
 };
