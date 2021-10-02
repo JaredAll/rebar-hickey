@@ -29,7 +29,7 @@ namespace rebarhickey::engine
 
     std::shared_ptr<SDL_Texture> render_letter_texture( TTF_Font* font,
                                                         char letter_singleton[],
-                                                        SDL_Color color);
+                                                        SDL_Color color) const;
   
     template< typename T, typename = typename std::enable_if_t<
                             std::is_base_of<rebarhickey::engine::HickeyComponent, T>::value>>

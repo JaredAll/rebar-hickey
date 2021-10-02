@@ -7,6 +7,7 @@
 #include "input_event.hpp"
 #include <cmath>
 #include <cstddef>
+#include <fstream>
 #include <memory>
 
 using rebarhickey::Hickey;
@@ -21,54 +22,15 @@ using std::vector;
 Hickey::Hickey()
 {
   engine = std::make_unique<Engine>();
-  engine -> initialize( 500, 500 );
+  engine -> initialize( 700, 700 );
 
-  if( TTF_Init() == -1 )
-  {
-    std::cout << "TTF_Init failed" << std::endl;
-  }
-
-  std::string path = "/home/jared/rebar-hickey/resources/OpenSans-Bold.ttf";
-
-  std::shared_ptr<TTF_Font> font {
-    TTF_OpenFont( path.c_str(), 24 ),
-    TTF_Font_Destroyer()
-  };
-
-  if( font == nullptr )
-  {
-    std::cout << "Error initializing font: " << TTF_GetError() << std::endl;
-  }
-  
-  std::string alphabet_chars = "0123456789TETRISYNtetrisJA";
-  SDL_Color white { 255, 255, 255 };
-
-  std::map<char, std::shared_ptr<SDL_Texture>> texture_map;
-  for( const char& character : alphabet_chars )
-  {
-    char letter_singleton[ 2 ] = { character, '\0' };
-
-    texture_map.insert(
-      std::make_pair(
-        character,
-        engine -> get_renderer().render_letter_texture( font.get(),
-                                                        letter_singleton,
-                                                        white )));
-  }
-
-  alphabet = std::make_unique<GlyphAlphabet>( texture_map );
+  alphabet = std::make_unique<GlyphAlphabet>( engine -> get_renderer() );
 
 }
 
 int Hickey::run()
 {
-  std::unique_ptr<GapBuffer> gap_buffer = std::make_unique<GapBuffer>();
-  gap_buffer -> insert( 'J' );
-  gap_buffer -> insert( 'A' );
-  gap_buffer -> insert( '\n' );
-  gap_buffer -> insert( 'A' );
-  gap_buffer -> insert( 'A' );
-
+  std::unique_ptr<GapBuffer> gap_buffer = read( "/home/jared/rebar-hickey/resources/file.txt" );
   std::unique_ptr<GapBuffer> gap_buffer_N = std::make_unique<GapBuffer>();
   gap_buffer_N -> insert( 'N' );
 
@@ -97,6 +59,25 @@ int Hickey::run()
   return 0;
 }
 
+std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
+{
+  char current_char;
+
+  std::ifstream file_stream( path );
+  std::unique_ptr<GapBuffer> buffer = std::make_unique<GapBuffer>();
+  if( file_stream.is_open() )
+  {
+    while( file_stream.get( current_char ) )
+    {
+      buffer -> insert( current_char );
+    }
+  }
+
+  file_stream.close();
+
+  return buffer;
+}
+
 vector<std::unique_ptr<GlyphNode>> Hickey::nodify( const GapBuffer& gap_buffer )
 {
   vector<char> text = gap_buffer.get_text();
@@ -114,6 +95,10 @@ vector<std::unique_ptr<GlyphNode>> Hickey::nodify( const GapBuffer& gap_buffer )
     {
       row++;
       column = 0;
+    }
+    else if( nodified_char == ' ' )
+    {
+      column++;
     }
     else
     {

@@ -76,7 +76,7 @@ InputEvent& Engine::process_input()
   return event;
 }
 
-HickeyRenderer& Engine::get_renderer()
+HickeyRenderer& Engine::get_renderer() const
 {
   return *renderer;
 }

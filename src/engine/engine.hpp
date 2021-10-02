@@ -38,7 +38,7 @@ namespace rebarhickey::engine
 
     bool peek_has_updated();
 
-    HickeyRenderer& get_renderer();
+    HickeyRenderer& get_renderer() const;
 
     input::InputEvent& process_input();
 
