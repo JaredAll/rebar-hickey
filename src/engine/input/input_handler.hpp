@@ -21,20 +21,6 @@ namespace rebarhickey::engine::input
 
     void determine_input();
 
-    bool escape( SDL_Event e );
-
-    bool up_arrow( SDL_Event e );
-
-    bool right_arrow( SDL_Event e );
-
-    bool left_arrow( SDL_Event e );
-
-    bool down_arrow( SDL_Event e );
-
-    bool enter( SDL_Event e );
-
-    bool romeo( SDL_Event e );
-
     std::unique_ptr<InputEvent> current_event;
     SDL_Event e;
     const Uint8* keyboard_state;

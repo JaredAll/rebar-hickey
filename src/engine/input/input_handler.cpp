@@ -23,48 +23,112 @@ void InputHandler::determine_input()
   {
     if( e.type == SDL_KEYDOWN )
     {
-      if( right_arrow( e ) )
+      SDL_Keycode keycode = e.key.keysym.sym;
+      switch(keycode)
       {
+      case SDLK_RIGHT:
         current_input_type = InputType::right;
-      }
-      
-      if( left_arrow( e ) )
-      {
+        break;
+      case SDLK_LEFT:
         current_input_type = InputType::left;
-      }
-
-      if( down_arrow( e ) )
-      {
+        break;
+      case SDLK_DOWN:
         current_input_type = InputType::down;
-      }
-
-      if( up_arrow( e ) )
-      {
+        break;
+      case SDLK_UP:
         current_input_type = InputType::up;
-      }
-
-      if( enter( e ) )
-      {
+        break;
+      case SDLK_RETURN:
         current_input_type = InputType::enter;
-      }
-
-      if( romeo( e ))
-      {
-        current_input_type = InputType::romeo;
-      }
-
-      if( escape( e ))
-      {
+        break;
+      case SDLK_ESCAPE:
         current_input_type = InputType::escape;
+        break;
+      case SDLK_a:
+        current_input_type = InputType::alpha;
+        break;
+      case SDLK_b:
+        current_input_type = InputType::bravo;
+        break;
+      case SDLK_c:
+        current_input_type = InputType::charlie;
+        break;
+      case SDLK_d:
+        current_input_type = InputType::delta;
+        break;
+      case SDLK_e:
+        current_input_type = InputType::echo;
+        break;
+      case SDLK_f:
+        current_input_type = InputType::foxtrot;
+        break;
+      case SDLK_g:
+        current_input_type = InputType::golf;
+        break;
+      case SDLK_h:
+        current_input_type = InputType::hotel;
+        break;
+      case SDLK_i:
+        current_input_type = InputType::india;
+        break;
+      case SDLK_j:
+        current_input_type = InputType::juliett;
+        break;
+      case SDLK_k:
+        current_input_type = InputType::kilo;
+        break;
+      case SDLK_l:
+        current_input_type = InputType::lima;
+        break;
+      case SDLK_m:
+        current_input_type = InputType::mike;
+        break;
+      case SDLK_n:
+        current_input_type = InputType::november;
+        break;
+      case SDLK_o:
+        current_input_type = InputType::oscar;
+        break;
+      case SDLK_p:
+        current_input_type = InputType::papa;
+        break;
+      case SDLK_q:
+        current_input_type = InputType::quebec;
+        break;
+      case SDLK_r:
+        current_input_type = InputType::romeo;
+        break;
+      case SDLK_s:
+        current_input_type = InputType::sierra;
+        break;
+      case SDLK_t:
+        current_input_type = InputType::tango;
+        break;
+      case SDLK_u:
+        current_input_type = InputType::uniform;
+        break;
+      case SDLK_v:
+        current_input_type = InputType::victor;
+        break;
+      case SDLK_w:
+        current_input_type = InputType::whiskey;
+        break;
+      case SDLK_x:
+        current_input_type = InputType::xray;
+        break;
+      case SDLK_y:
+        current_input_type = InputType::yankee;
+        break;
+      case SDLK_z:
+        current_input_type = InputType::zulu;
+        break;
       }
     }
-
-    if( e.type == SDL_KEYUP )
+    else if( e.type == SDL_KEYUP )
     {
       current_input_type = InputType::none;
     }
-
-    if( e.type == SDL_QUIT )
+    else if( e.type == SDL_QUIT )
     {
       current_input_type = InputType::escape;
     }
@@ -77,39 +141,4 @@ InputEvent& InputHandler::handle_input()
 { 
   determine_input();
   return *current_event;
-}
-
-bool InputHandler::escape( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_ESCAPE;
-}
-
-bool InputHandler::right_arrow( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_RIGHT;
-}
-
-bool InputHandler::left_arrow( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_LEFT;
-}
-
-bool InputHandler::down_arrow( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_DOWN;
-}
-
-bool InputHandler::up_arrow( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_UP;
-}
-
-bool InputHandler::enter( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_RETURN;
-}
-
-bool InputHandler::romeo( SDL_Event e )
-{
-  return e.key.keysym.sym == SDLK_r;
 }

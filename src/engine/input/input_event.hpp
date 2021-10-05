@@ -2,6 +2,7 @@
 #define INPUT_EVENT_H
 
 #include "input_type.hpp"
+#include <optional>
 
 namespace rebarhickey::engine::input
 {
@@ -12,17 +13,7 @@ namespace rebarhickey::engine::input
 
     InputEvent( InputType current, InputType previous );
 
-    bool left_up() const;
-
-    bool right_up() const;
-
-    bool down_up() const;
-
-    bool up_up() const;
-
-    bool enter_up() const;
-
-    bool romeo_up() const;
+    std::optional<InputType> key_pressed() const;
 
     bool escape() const;
 

@@ -1,45 +1,23 @@
 #include "input_event.hpp"
+#include "input_type.hpp"
 
 using rebarhickey::engine::input::InputEvent;
+using rebarhickey::engine::input::InputType;
 
 InputEvent::InputEvent( InputType current, InputType previous )
   : current_frame_input( current ), previous_frame_input( previous )
 {}
 
-bool InputEvent::left_up() const
+std::optional<InputType> InputEvent::key_pressed() const
 {
-  return previous_frame_input == InputType::left &&
-    current_frame_input == InputType::none;
-}
-
-bool InputEvent::right_up() const
-{
-  return previous_frame_input == InputType::right &&
-    current_frame_input == InputType::none;
-}
-
-bool InputEvent::down_up() const
-{
-  return previous_frame_input == InputType::down &&
-    current_frame_input == InputType::none;
-}
-
-bool InputEvent::up_up() const
-{
-  return previous_frame_input == InputType::up &&
-    current_frame_input == InputType::none;
-}
-
-bool InputEvent::enter_up() const
-{
-  return previous_frame_input == InputType::enter &&
-    current_frame_input == InputType::none;
-}
-
-bool InputEvent::romeo_up() const
-{
-  return previous_frame_input == InputType::romeo &&
-    current_frame_input == InputType::none;
+  std::optional<InputType> key_type {};
+  if( previous_frame_input != InputType::none &&
+      current_frame_input == InputType::none)
+  {
+    key_type = std::optional<InputType> { previous_frame_input };
+  }
+  
+  return key_type;
 }
 
 bool InputEvent::escape() const

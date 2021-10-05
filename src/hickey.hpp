@@ -25,6 +25,8 @@ namespace rebarhickey
 
     std::unique_ptr<GapBuffer> read( const std::string& path );
 
+    std::optional<char> handle_input();
+
     std::vector<std::unique_ptr<GlyphNode>> nodify( const GapBuffer& gap_buffer );
 
   private:
