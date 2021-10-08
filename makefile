@@ -16,7 +16,10 @@ glyph.o \
 glyph_node.o \
 glyph_alphabet.o \
 hickey.o\
-gap_buffer.o)
+gap_buffer.o\
+buffer_insert_action.o\
+buffer_remove_action.o\
+buffer_action_factory.o)
 
 VPATH = src:src/engine:src/engine/input:src/engine/utility:src/text
 

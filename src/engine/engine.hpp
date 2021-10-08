@@ -40,7 +40,7 @@ namespace rebarhickey::engine
 
     HickeyRenderer& get_renderer() const;
 
-    input::InputEvent& process_input();
+    std::queue<std::unique_ptr<input::InputEvent>>& process_input();
 
     
   private:

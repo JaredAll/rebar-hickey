@@ -36,6 +36,8 @@ namespace rebarhickey::engine::input
     xray,
     yankee,
     zulu,
+    space,
+    backspace,
     escape,  
     none,
     up

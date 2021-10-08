@@ -58,6 +58,7 @@ void Engine::initialize( int height, int width )
     should_update = true;
     frame_count = 0;
     running = true;
+    input_handler -> initialize();
   }
 }
 
@@ -66,14 +67,20 @@ void Engine::quit()
   exit( 0 );
 }
 
-InputEvent& Engine::process_input()
+std::queue<std::unique_ptr<InputEvent>>& Engine::process_input()
 {
-  InputEvent& event = input_handler -> handle_input();
-  if( event.escape() )
+  std::queue<std::unique_ptr<InputEvent>>& queue = input_handler -> handle_input();
+
+  if( !queue.empty() )
   {
-    quit();
+    InputEvent& event = *queue.front();
+    if( event.escape() )
+    {
+      quit();
+    }
   }
-  return event;
+  
+  return queue;
 }
 
 HickeyRenderer& Engine::get_renderer() const

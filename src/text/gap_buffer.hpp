@@ -13,6 +13,8 @@ namespace rebarhickey::text
 
     void insert( char character );
 
+    void remove( int num_to_remove );
+
     std::vector<char> get_text() const;
 
   private:

@@ -6,6 +6,8 @@
 #include "gap_buffer.hpp"
 #include "glyph_alphabet.hpp"
 #include "glyph_node.hpp"
+#include "buffer_action.hpp"
+#include "buffer_action_factory.hpp"
 
 using rebarhickey::engine::Engine;
 using rebarhickey::text::GapBuffer;
@@ -25,7 +27,7 @@ namespace rebarhickey
 
     std::unique_ptr<GapBuffer> read( const std::string& path );
 
-    std::optional<char> handle_input();
+    std::optional<std::unique_ptr<text::BufferAction>> handle_input();
 
     std::vector<std::unique_ptr<GlyphNode>> nodify( const GapBuffer& gap_buffer );
 
@@ -33,6 +35,7 @@ namespace rebarhickey
 
     std::unique_ptr<Engine> engine;
     std::unique_ptr<GlyphAlphabet> alphabet;
+    std::unique_ptr<BufferActionFactory> buffer_action_factory;
 
   };
 
