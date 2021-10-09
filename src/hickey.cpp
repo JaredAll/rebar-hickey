@@ -73,7 +73,7 @@ std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
   return buffer;
 }
 
-vector<std::unique_ptr<GlyphNode>> Hickey::nodify( const GapBuffer& gap_buffer )
+vector<std::unique_ptr<GlyphNode>> Hickey::nodify( GapBuffer& gap_buffer )
 {
   vector<char> text = gap_buffer.get_text();
   int text_length = text.size();

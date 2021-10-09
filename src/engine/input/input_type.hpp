@@ -6,6 +6,7 @@ namespace rebarhickey::engine::input
 
   enum class InputType
   {
+    up,
     left,
     right,
     down,
@@ -38,9 +39,9 @@ namespace rebarhickey::engine::input
     zulu,
     space,
     backspace,
-    escape,  
+    escape,
+    period,
     none,
-    up
   };
 
 }

@@ -29,7 +29,7 @@ namespace rebarhickey
 
     std::optional<std::unique_ptr<text::BufferAction>> handle_input();
 
-    std::vector<std::unique_ptr<GlyphNode>> nodify( const GapBuffer& gap_buffer );
+    std::vector<std::unique_ptr<GlyphNode>> nodify( GapBuffer& gap_buffer );
 
   private:
 

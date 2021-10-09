@@ -2,11 +2,13 @@
 #include "input_event.hpp"
 #include "buffer_insert_action.hpp"
 #include "buffer_remove_action.hpp"
+#include "buffer_cursor_action.hpp"
 #include <queue>
 
 using rebarhickey::text::BufferAction;
 using rebarhickey::text::BufferInsertAction;
 using rebarhickey::text::BufferRemoveAction;
+using rebarhickey::text::BufferCursorAction;
 using rebarhickey::BufferActionFactory;
 using rebarhickey::engine::input::InputEvent;
 using rebarhickey::engine::input::InputType;
@@ -42,14 +44,21 @@ BufferActionFactory::BufferActionFactory( Engine& param_engine ) : engine( param
   insertion_types[ InputType::zulu ]  = 'z';
   insertion_types[ InputType::space ]  = ' ';
   insertion_types[ InputType::enter ]  = '\n';
+  insertion_types[ InputType::period ] = '.';
 
   removal_types[ InputType::backspace ] = 1;
+
+  cursor_types[ InputType::up ] = { -1, 0 };
+  cursor_types[ InputType::down ] = { 1, 0 };
+  cursor_types[ InputType::left ] = { 0, -1 };
+  cursor_types[ InputType::right ] = { 0, 1 };
 }
 
 std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
 {
   std::optional<char> input_char_optional {};
   std::optional<int> removal_int_optional {};
+  std::optional<std::pair<int, int>> cursor_pair_optional {};
   std::queue<std::unique_ptr<InputEvent>>& event_queue = engine.process_input();
 
   if( !event_queue.empty() )
@@ -73,6 +82,14 @@ std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
           removal_int_optional = { removal_pair.second };
         }
       }
+
+      for( const auto& cursor_pair : cursor_types )
+      {
+        if( input_type_optional.value() == cursor_pair.first )
+        {
+          cursor_pair_optional = { cursor_pair.second };
+        }
+      }
     }
     event_queue.pop();
   }
@@ -85,6 +102,16 @@ std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
   else if( removal_int_optional.has_value() )
   {    
     action = { std::make_unique<BufferRemoveAction> ( removal_int_optional.value() ) };
+  }
+  else if( cursor_pair_optional.has_value() )
+  {
+    std::pair<int, int> cursor_pair = cursor_pair_optional.value();
+    action = {
+      std::make_unique<BufferCursorAction> (
+        cursor_pair.first,
+        cursor_pair.second
+        )
+    };
   }
 
   return action;

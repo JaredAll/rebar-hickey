@@ -21,6 +21,7 @@ namespace rebarhickey
     engine::Engine& engine;
     std::map<engine::input::InputType, char> insertion_types;
     std::map<engine::input::InputType, int> removal_types;
+    std::map<engine::input::InputType, std::pair<int, int>> cursor_types;
   };
 }
 

@@ -145,6 +145,9 @@ void InputHandler::determine_input()
         case SDLK_BACKSPACE:
           current_input_type = InputType::backspace;
           break;
+        case SDLK_PERIOD:
+          current_input_type = InputType::period;
+          break;
         }
       }
       else if( e.type == SDL_KEYUP )
