@@ -16,16 +16,18 @@ namespace rebarhickey::text
 
     GlyphAlphabet( const engine::HickeyRenderer& );
 
-    std::unique_ptr<Glyph> get_char_as_glyph( char character );
+    std::unique_ptr<Glyph> get_char_as_glyph( char character, bool selected );
 
     int get_letter_h();
     int get_letter_w();
 
   private:
 
-    std::shared_ptr<SDL_Texture> find_letter_texture( char character );
+    std::shared_ptr<SDL_Texture> find_letter_texture( char character, bool selected );
 
     std::map<char, std::shared_ptr<SDL_Texture>> alphabet_map;
+
+    std::map<char, std::shared_ptr<SDL_Texture>> selected_alphabet_map;
 
     int letter_h;
     int letter_w;

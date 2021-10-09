@@ -29,6 +29,7 @@ namespace rebarhickey::text
     }
 
     SDL_Color white { 255, 255, 255 };
+    SDL_Color blue { 100, 100, 255 };
 
     for( const char& character : alphabet_chars )
     {
@@ -42,24 +43,39 @@ namespace rebarhickey::text
                                           white )
           )
         );
+
+      selected_alphabet_map.insert(
+        std::make_pair(
+          character,
+          renderer.render_letter_texture( font.get(),
+                                          letter_singleton,
+                                          blue )
+          )
+        );
     }
 
     SDL_QueryTexture( 
-      find_letter_texture( 'a' ).get(), 
+      find_letter_texture( 'a' , false ).get(), 
       NULL, 
       NULL, 
       &letter_h, 
       &letter_w );
   }
 
-  std::shared_ptr<SDL_Texture> GlyphAlphabet::find_letter_texture( char character )
+  std::shared_ptr<SDL_Texture> GlyphAlphabet::find_letter_texture( char character, bool selected )
   {
     std::shared_ptr<SDL_Texture> texture {};
 
-    std::map<char, std::shared_ptr<SDL_Texture>>::iterator iterator;
-    iterator = alphabet_map.find( character );
+    std::map<char, std::shared_ptr<SDL_Texture>> texture_map = alphabet_map;
+    if( selected )
+    {
+      texture_map = selected_alphabet_map;
+    }
 
-    if( iterator != alphabet_map.end() )
+    std::map<char, std::shared_ptr<SDL_Texture>>::iterator iterator;
+    iterator = texture_map.find( character );
+
+    if( iterator != texture_map.end() )
     {
       texture = (*iterator).second;
     }
@@ -71,14 +87,14 @@ namespace rebarhickey::text
     return texture;
   }
 
-  std::unique_ptr<Glyph> GlyphAlphabet::get_char_as_glyph( char character )
+  std::unique_ptr<Glyph> GlyphAlphabet::get_char_as_glyph( char character, bool selected )
   {
     return std::make_unique<Glyph>(
       0,
       0,
       letter_w,
       letter_h,
-      find_letter_texture( character ) );
+      find_letter_texture( character, selected ) );
   }
 
   int GlyphAlphabet::get_letter_h()

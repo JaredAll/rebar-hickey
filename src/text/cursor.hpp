@@ -5,29 +5,13 @@
 
 namespace rebarhickey::text
 {
-  class Cursor : public EditorNode
+  class Cursor
   {
   public:
 
     Cursor( int row, int column );
 
     ~Cursor() = default;
-
-    virtual std::vector<std::unique_ptr<EditorNode>> get_sub_nodes() override;
-    
-    virtual EditorNode& get_parent() override;
-
-    virtual void update() override;
-
-    virtual void update( engine::input::InputEvent& event ) override;
-
-    virtual bool accepting_input() override;
-
-    virtual int get_height() override;
-
-    virtual int get_width() override;
-
-    virtual void accept_renderer( engine::HickeyRenderer& renderer ) override;
 
     int get_row() const;
 

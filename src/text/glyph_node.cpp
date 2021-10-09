@@ -6,7 +6,11 @@ using std::unique_ptr;
 
 namespace rebarhickey::text
 {
-  GlyphNode::GlyphNode( int param_row, int param_column, std::unique_ptr<Glyph> param_glyph ) :
+  GlyphNode::GlyphNode(
+    int param_row,
+    int param_column,
+    std::unique_ptr<Glyph> param_glyph
+    ) :
     row( param_row ),
     column( param_column ),
     glyph( std::move( param_glyph ) )

@@ -12,43 +12,6 @@ Cursor::Cursor( int param_row, int param_column )
   : row( param_row ), column( param_column )
 {}
 
-std::vector<std::unique_ptr<EditorNode>> Cursor::get_sub_nodes()
-{
-  return {};
-}
-
-EditorNode& Cursor::get_parent()
-{
-  return *this;
-}
-
-void Cursor::update()
-{
-}
-
-void Cursor::update( InputEvent& event )
-{
-}
-
-bool Cursor::accepting_input()
-{
-  return false;
-}
-
-int Cursor::get_height()
-{
-  return 0;
-}
-
-int Cursor::get_width()
-{
-  return 0;
-}
-
-void Cursor::accept_renderer( HickeyRenderer& renderer )
-{
-}
-
 int Cursor::get_row() const
 {
   return row;

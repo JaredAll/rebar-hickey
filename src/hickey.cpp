@@ -1,5 +1,6 @@
 #include "hickey.hpp"
 #include "cleanup.hpp"
+#include "editor_node.hpp"
 #include "engine.hpp"
 #include "gap_buffer.hpp"
 #include "glyph_alphabet.hpp"
@@ -16,8 +17,10 @@ using rebarhickey::text::GlyphAlphabet;
 using rebarhickey::text::Glyph;
 using rebarhickey::text::GlyphNode;
 using rebarhickey::text::BufferAction;
+using rebarhickey::text::Cursor;
 using rebarhickey::engine::input::InputEvent;
 using rebarhickey::engine::input::InputType;
+using rebarhickey::EditorNode;
 
 using std::vector;
 
@@ -34,7 +37,7 @@ int Hickey::run()
 {
   std::unique_ptr<GapBuffer> gap_buffer = read( "/home/jared/rebar-hickey/resources/file.txt" );
 
-  std::vector<std::vector<std::unique_ptr<GlyphNode>>> vector_of_nodes_2D;
+  std::vector<std::vector<std::unique_ptr<EditorNode>>> vector_of_nodes_2D;
   vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );    
 
   int show_index = 0;
@@ -73,11 +76,11 @@ std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
   return buffer;
 }
 
-vector<std::unique_ptr<GlyphNode>> Hickey::nodify( GapBuffer& gap_buffer )
+vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
 {
   vector<char> text = gap_buffer.get_text();
   int text_length = text.size();
-  vector<std::unique_ptr<GlyphNode>> glyph_nodes {};
+  vector<std::unique_ptr<EditorNode>> glyph_nodes {};
 
   int character_count = 0;
   int row = 0;
@@ -97,10 +100,17 @@ vector<std::unique_ptr<GlyphNode>> Hickey::nodify( GapBuffer& gap_buffer )
     }
     else
     {
+      bool selected = false;
+      Cursor& cursor = gap_buffer.get_cursor();
+      if( cursor.get_row() == row && cursor.get_column() == column )
+      {
+        selected = true;
+      }
+
       std::unique_ptr<GlyphNode> glyph_node = std::make_unique<GlyphNode>(
         row,
         column,
-        std::move( alphabet -> get_char_as_glyph( nodified_char ) )
+        std::move( alphabet -> get_char_as_glyph( nodified_char, selected ) )
         );
 
       glyph_nodes.push_back( std::move( glyph_node ) );

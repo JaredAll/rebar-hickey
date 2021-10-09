@@ -112,7 +112,7 @@ void GapBuffer::shuffle_gap( int cursor_index, int gap_index )
     {
       new_text_before_gap.push_back( text_before_gap.at( i ) );
     }
-
+    
     for( int i = 0; i < cursor_index - text_before_gap.size(); i++ )
     {
       new_text_before_gap.push_back( text_after_gap.at( i ) );
