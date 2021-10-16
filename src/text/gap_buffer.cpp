@@ -3,6 +3,7 @@
 
 using rebarhickey::text::GapBuffer;
 using rebarhickey::text::Cursor;
+using std::vector;
 
 GapBuffer::GapBuffer()
 {
@@ -36,17 +37,24 @@ void GapBuffer::remove( int num_to_remove )
   
   int new_size = text_before_gap.size() - num_to_remove;
 
+  vector<char> removed;
+  removed.assign(
+    text_before_gap.begin() + new_size,
+    text_before_gap.end()
+    );
+
   std::vector<char> new_text_before_gap {};
   for( int i = 0; i < new_size; i++ )
   {
     new_text_before_gap.push_back( text_before_gap.at( i ) );
   }
+  update_cursor_on_remove( removed );
   text_before_gap = new_text_before_gap;
   sync_text();
 }
 
 
-std::vector<char> GapBuffer::get_text()
+std::vector<char> GapBuffer::get_text() const
 {
   return text;
 }
@@ -148,6 +156,50 @@ void GapBuffer::update_cursor_on_insert( char character )
   {
     cursor -> set_column( ++cursor_column );
   }
+}
+
+void GapBuffer::update_cursor_on_remove( vector<char> removed )
+{
+  for( char character : removed )
+  {
+    int cursor_row = cursor -> get_row();
+    int cursor_column = cursor -> get_column();
+
+    if( character == '\n' )
+    {
+      cursor -> set_row( --cursor_row );
+      cursor -> set_column( calculate_line_length( cursor_row ) );
+    }
+    else
+    {
+      cursor -> set_column( --cursor_column );
+    }
+  }
+}
+
+int GapBuffer::calculate_line_length( int row )
+{
+  int index = 0;
+  int rows_counted = 0;
+  while( rows_counted < row )
+  {
+    if( text.at( index ) == '\n' )
+    {
+      rows_counted++;
+    }
+    index++;
+  }
+
+  int line_length = 0;
+  char current_char = text.at( index );
+  while( current_char != '\n' )
+  {
+    line_length++;
+    index++;
+    current_char = text.at( index );
+  }
+
+  return line_length;
 }
 
 void GapBuffer::sync_text()

@@ -16,7 +16,7 @@ namespace rebarhickey::text
 
     void remove( int num_to_remove );
 
-    std::vector<char> get_text();
+    std::vector<char> get_text() const;
 
     Cursor& get_cursor() const;
 
@@ -27,6 +27,10 @@ namespace rebarhickey::text
     void shuffle_gap(int cursor_index, int gap_index );
 
     void update_cursor_on_insert( char character );
+
+    void update_cursor_on_remove( std::vector<char> removed );
+
+    int calculate_line_length( int row );
 
     void sync_text();
 

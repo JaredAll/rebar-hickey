@@ -35,7 +35,8 @@ Hickey::Hickey()
 
 int Hickey::run()
 {
-  std::unique_ptr<GapBuffer> gap_buffer = read( "/home/jared/rebar-hickey/resources/file.txt" );
+  std::string path = "/home/jared/rebar-hickey/resources/file.txt";
+  std::unique_ptr<GapBuffer> gap_buffer = read( path );
 
   std::vector<std::vector<std::unique_ptr<EditorNode>>> vector_of_nodes_2D;
   vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );    
@@ -50,6 +51,7 @@ int Hickey::run()
     if( action.has_value() )
     {
       action.value() -> update_buffer( *gap_buffer );
+      write( path, *gap_buffer );
     }
     vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );    
   }
@@ -74,6 +76,21 @@ std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
   file_stream.close();
 
   return buffer;
+}
+
+void Hickey::write( const std::string& path, const GapBuffer& buffer )
+{
+  vector<char> text = buffer.get_text();
+
+  std::ofstream file_stream( path );
+  int text_size = text.size();
+
+  for( int i = 0; i < text.size(); i++ )
+  {
+    file_stream.write( &text.at( i ), 1 );
+  }
+
+  file_stream.close();
 }
 
 vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
