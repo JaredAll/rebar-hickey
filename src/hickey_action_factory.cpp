@@ -5,6 +5,7 @@
 #include "gap_buffer.hpp"
 #include "hickey.hpp"
 #include "action_factory.hpp"
+#include "io_action_factory.hpp"
 #include <memory>
 
 using rebarhickey::HickeyActionFactory;
@@ -12,6 +13,8 @@ using rebarhickey::HickeyAction;
 using rebarhickey::Hickey;
 using rebarhickey::engine::Engine;
 using rebarhickey::text::BufferAction;
+using rebarhickey::text::BufferActionFactory;
+using rebarhickey::io::IoActionFactory;
 using rebarhickey::text::BufferExecutor;
 using rebarhickey::text::GapBuffer;
 using std::make_unique;
@@ -22,6 +25,7 @@ HickeyActionFactory::HickeyActionFactory( Engine& param_engine )
   : event_queue( engine.process_input() ), engine( param_engine )
 {
   action_factories.push_back( make_unique<BufferActionFactory>() );
+  action_factories.push_back( make_unique<IoActionFactory>() );
 }
 
 optional<unique_ptr<HickeyAction>> HickeyActionFactory::next_action(Hickey& hickey)

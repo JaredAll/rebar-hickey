@@ -14,7 +14,7 @@ using rebarhickey::HickeyAction;
 using rebarhickey::text::BufferInsertAction;
 using rebarhickey::text::BufferRemoveAction;
 using rebarhickey::text::BufferCursorAction;
-using rebarhickey::BufferActionFactory;
+using rebarhickey::text::BufferActionFactory;
 using rebarhickey::engine::input::InputEvent;
 using rebarhickey::engine::input::InputType;
 using rebarhickey::engine::Engine;

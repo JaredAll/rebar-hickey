@@ -2,5 +2,3 @@ Hello, world!
 
 Here is the first text file
 rebar hickey will read.
-what it works hello there.
-uhoh

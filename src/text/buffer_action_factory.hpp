@@ -7,7 +7,7 @@
 #include "engine.hpp"
 #include "action_factory.hpp"
 
-namespace rebarhickey
+namespace rebarhickey::text
 {
   class BufferActionFactory : public ActionFactory
   {
