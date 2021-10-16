@@ -5,6 +5,7 @@
 #include "gap_buffer.hpp"
 #include "glyph_alphabet.hpp"
 #include "glyph_node.hpp"
+#include "hickey_action_factory.hpp"
 #include "input_event.hpp"
 #include <cmath>
 #include <cstddef>
@@ -23,6 +24,8 @@ using rebarhickey::engine::input::InputType;
 using rebarhickey::EditorNode;
 
 using std::vector;
+using std::unique_ptr;
+using std::optional;
 
 Hickey::Hickey()
 {
@@ -30,15 +33,15 @@ Hickey::Hickey()
   engine -> initialize( 700, 700 );
 
   alphabet = std::make_unique<GlyphAlphabet>( engine -> get_renderer() );
-  buffer_action_factory = std::make_unique<BufferActionFactory>( *engine );
+  hickey_action_factory = std::make_unique<HickeyActionFactory>( *engine );
 }
 
 int Hickey::run()
 {
   std::string path = "/home/jared/rebar-hickey/resources/file.txt";
-  std::unique_ptr<GapBuffer> gap_buffer = read( path );
+  gap_buffer = read( path );
 
-  std::vector<std::vector<std::unique_ptr<EditorNode>>> vector_of_nodes_2D;
+  vector<vector<unique_ptr<EditorNode>>> vector_of_nodes_2D;
   vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );    
 
   int show_index = 0;
@@ -47,13 +50,13 @@ int Hickey::run()
     engine -> advance( vector_of_nodes_2D.at( show_index ) );
 
     vector_of_nodes_2D.clear();
-    std::optional<std::unique_ptr<BufferAction>> action = buffer_action_factory -> next_action();
+    optional<unique_ptr<HickeyAction>> action = hickey_action_factory -> next_action( *this );
     if( action.has_value() )
     {
-      action.value() -> update_buffer( *gap_buffer );
+      action.value() -> update();
       write( path, *gap_buffer );
     }
-    vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );    
+    vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );
   }
 
   return 0;
@@ -137,4 +140,9 @@ vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
   }
 
   return glyph_nodes;
+}
+
+GapBuffer& Hickey::get_current_buffer() const
+{
+  return *gap_buffer;
 }

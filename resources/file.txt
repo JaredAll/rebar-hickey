@@ -1,6 +1,4 @@
 Hello, world!
 
 Here is the first text file
-rebar hickey will rea
-im writing out for every letter
-damn
+rebar hickey will read.
