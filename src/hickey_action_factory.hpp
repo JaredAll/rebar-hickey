@@ -1,12 +1,12 @@
 #ifndef HICKEY_ACTION_FACTORY_H
 #define HICKEY_ACTION_FACTORY_H
 
-#include "buffer_action_factory.hpp"
 #include "hickey_action.hpp"
 #include <optional>
 #include <memory>
 #include "engine.hpp"
 #include "gap_buffer.hpp"
+#include "action_factory.hpp"
 
 namespace rebarhickey
 {
@@ -21,8 +21,10 @@ namespace rebarhickey
     std::optional<std::unique_ptr<HickeyAction>> next_action( Hickey& );
     
   private:
-    
-    std::unique_ptr<BufferActionFactory> buffer_factory;
+
+    engine::Engine& engine;
+    std::queue<std::unique_ptr<engine::input::InputEvent>>& event_queue;
+    std::vector<std::unique_ptr<ActionFactory>> action_factories;
     
   };
 }

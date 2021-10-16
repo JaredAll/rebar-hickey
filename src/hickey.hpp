@@ -7,7 +7,6 @@
 #include "glyph_alphabet.hpp"
 #include "glyph_node.hpp"
 #include "buffer_action.hpp"
-#include "buffer_action_factory.hpp"
 #include "hickey_action_factory.hpp"
 
 using rebarhickey::engine::Engine;

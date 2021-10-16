@@ -28,10 +28,6 @@ namespace rebarhickey::engine
       {
         render_components( components );
       }
-
-      // input::InputEvent& event = process_input();
-
-      // update_components( event, components );
     }
 
     void quit();

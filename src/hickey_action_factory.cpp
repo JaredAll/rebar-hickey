@@ -4,6 +4,7 @@
 #include "buffer_executor.hpp"
 #include "gap_buffer.hpp"
 #include "hickey.hpp"
+#include "action_factory.hpp"
 #include <memory>
 
 using rebarhickey::HickeyActionFactory;
@@ -17,25 +18,38 @@ using std::make_unique;
 using std::optional;
 using std::unique_ptr;
 
-HickeyActionFactory::HickeyActionFactory( Engine& engine )
+HickeyActionFactory::HickeyActionFactory( Engine& param_engine )
+  : event_queue( engine.process_input() ), engine( param_engine )
 {
-  buffer_factory = make_unique<BufferActionFactory>( engine );
+  action_factories.push_back( make_unique<BufferActionFactory>() );
 }
 
 optional<unique_ptr<HickeyAction>> HickeyActionFactory::next_action(Hickey& hickey)
 {
   optional<unique_ptr<HickeyAction>> hickey_action_optional {};
 
-  optional<unique_ptr<BufferAction>> buffer_action_optional = buffer_factory -> next_action();
-
-  if( buffer_action_optional.has_value() )
+  int factory_index = 0;
+  while( !hickey_action_optional.has_value() && factory_index < action_factories.size() )
   {
-    hickey_action_optional = {
-      make_unique<text::BufferExecutor>(
-        hickey.get_current_buffer(),
-        std::move( buffer_action_optional.value() )
-        )
-    };
+    hickey_action_optional = action_factories.at(
+      factory_index
+      ) -> next_action( event_queue, hickey );
+
+    factory_index++;
+  }
+
+  if( !event_queue.empty() )
+  {
+    engine::input::InputEvent& event = *event_queue.front();
+    if( event.escape() )
+    {
+      engine.quit();
+    }
+  }
+
+  if( hickey_action_optional.has_value() )
+  {
+    event_queue.pop();
   }
 
   return hickey_action_optional;

@@ -1,11 +1,16 @@
 #include "buffer_action_factory.hpp"
+#include "buffer_executor.hpp"
 #include "input_event.hpp"
 #include "buffer_insert_action.hpp"
 #include "buffer_remove_action.hpp"
 #include "buffer_cursor_action.hpp"
+#include "hickey.hpp"
+#include <memory>
+#include <optional>
 #include <queue>
 
 using rebarhickey::text::BufferAction;
+using rebarhickey::HickeyAction;
 using rebarhickey::text::BufferInsertAction;
 using rebarhickey::text::BufferRemoveAction;
 using rebarhickey::text::BufferCursorAction;
@@ -14,7 +19,12 @@ using rebarhickey::engine::input::InputEvent;
 using rebarhickey::engine::input::InputType;
 using rebarhickey::engine::Engine;
 
-BufferActionFactory::BufferActionFactory( Engine& param_engine ) : engine( param_engine )
+using std::optional;
+using std::queue;
+using std::unique_ptr;
+using std::pair;
+
+BufferActionFactory::BufferActionFactory()
 {  
   insertion_types[ InputType::alpha ]  = 'a';
   insertion_types[ InputType::bravo ]  = 'b';
@@ -54,16 +64,17 @@ BufferActionFactory::BufferActionFactory( Engine& param_engine ) : engine( param
   cursor_types[ InputType::right ] = { 0, 1 };
 }
 
-std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
-{
-  std::optional<char> input_char_optional {};
-  std::optional<int> removal_int_optional {};
-  std::optional<std::pair<int, int>> cursor_pair_optional {};
-  std::queue<std::unique_ptr<InputEvent>>& event_queue = engine.process_input();
+optional<unique_ptr<HickeyAction>> BufferActionFactory::next_action(
+  const queue<unique_ptr<engine::input::InputEvent>>& event_queue,
+  const Hickey& hickey
+  ) {
+  optional<char> input_char_optional {};
+  optional<int> removal_int_optional {};
+  optional<pair<int, int>> cursor_pair_optional {};
 
   if( !event_queue.empty() )
   {
-    std::optional<InputType> input_type_optional = event_queue.front() -> key_pressed();
+    optional<InputType> input_type_optional = event_queue.front() -> key_pressed();
 
     if( input_type_optional.has_value() )
     {
@@ -91,7 +102,6 @@ std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
         }
       }
     }
-    event_queue.pop();
   }
 
   std::optional<std::unique_ptr<BufferAction>> action {};
@@ -113,6 +123,18 @@ std::optional<std::unique_ptr<BufferAction>> BufferActionFactory::next_action()
         )
     };
   }
+  
+  optional<unique_ptr<HickeyAction>> hickey_action_optional {};
+  
+  if( action.has_value() )
+  {
+    hickey_action_optional = {
+      std::make_unique<text::BufferExecutor>(
+        hickey.get_current_buffer(),
+        std::move( action.value() )
+        )
+    };
+  }
 
-  return action;
+  return hickey_action_optional;
 }

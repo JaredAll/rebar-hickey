@@ -5,20 +5,25 @@
 #include <optional>
 #include <memory>
 #include "engine.hpp"
+#include "action_factory.hpp"
 
 namespace rebarhickey
 {
-  class BufferActionFactory
+  class BufferActionFactory : public ActionFactory
   {
   public:
 
-    BufferActionFactory( engine::Engine& engine );
+    BufferActionFactory();
 
-    std::optional<std::unique_ptr<text::BufferAction>> next_action();
+    ~BufferActionFactory() = default;
+
+    std::optional<std::unique_ptr<HickeyAction>> next_action(
+      const std::queue<std::unique_ptr<engine::input::InputEvent>>&,
+      const Hickey& hickey
+      ) override;
 
   private:
     
-    engine::Engine& engine;
     std::map<engine::input::InputType, char> insertion_types;
     std::map<engine::input::InputType, int> removal_types;
     std::map<engine::input::InputType, std::pair<int, int>> cursor_types;

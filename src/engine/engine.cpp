@@ -69,18 +69,7 @@ void Engine::quit()
 
 std::queue<std::unique_ptr<InputEvent>>& Engine::process_input()
 {
-  std::queue<std::unique_ptr<InputEvent>>& queue = input_handler -> handle_input();
-
-  if( !queue.empty() )
-  {
-    InputEvent& event = *queue.front();
-    if( event.escape() )
-    {
-      quit();
-    }
-  }
-  
-  return queue;
+  return input_handler -> handle_input();
 }
 
 HickeyRenderer& Engine::get_renderer() const
