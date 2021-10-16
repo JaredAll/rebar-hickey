@@ -32,6 +32,8 @@ void InputHandler::initialize()
 
 void InputHandler::determine_input()
 {
+  bool ctrl_down = false;
+  
   while( polling )
   {
     previous_input_type = current_input_type;
@@ -43,6 +45,10 @@ void InputHandler::determine_input()
         SDL_Keycode keycode = e.key.keysym.sym;
         switch(keycode)
         {
+        case SDLK_RCTRL:
+        case SDLK_LCTRL:
+          ctrl_down = true;
+          break;
         case SDLK_RIGHT:
           current_input_type = InputType::right;
           break;
@@ -153,6 +159,14 @@ void InputHandler::determine_input()
       else if( e.type == SDL_KEYUP )
       {
         current_input_type = InputType::none;
+        SDL_Keycode keycode = e.key.keysym.sym;
+        switch( keycode )
+        {
+        case SDLK_RCTRL:
+        case SDLK_LCTRL:
+          ctrl_down = false;
+          break;
+        }
       }
       else if( e.type == SDL_QUIT )
       {
@@ -162,7 +176,8 @@ void InputHandler::determine_input()
 
     unique_ptr<InputEvent> event = make_unique<InputEvent>(
       current_input_type,
-      previous_input_type
+      previous_input_type,
+      ctrl_down
       );
 
     if( event -> key_pressed().has_value() )

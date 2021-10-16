@@ -54,7 +54,6 @@ int Hickey::run()
     if( action.has_value() )
     {
       action.value() -> update();
-      write( path, *gap_buffer );
     }
     vector_of_nodes_2D.push_back( nodify( *gap_buffer ) );
   }
@@ -78,10 +77,12 @@ std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
 
   file_stream.close();
 
+  buffer -> set_path( path );
+
   return buffer;
 }
 
-void Hickey::write( const std::string& path, const GapBuffer& buffer )
+void Hickey::write( const std::string& path, const GapBuffer& buffer ) const
 {
   vector<char> text = buffer.get_text();
 

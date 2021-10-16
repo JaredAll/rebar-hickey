@@ -23,6 +23,7 @@ buffer_remove_action.o\
 buffer_cursor_action.o\
 buffer_executor.o\
 io_action_factory.o\
+io_executor.o\
 hickey_action_factory.o\
 buffer_action_factory.o)
 

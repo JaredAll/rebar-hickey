@@ -20,6 +20,10 @@ namespace rebarhickey::text
 
     Cursor& get_cursor() const;
 
+    std::string get_path() const;
+
+    void set_path( std::string );
+
   private:
 
     int calculate_cursor_index();
@@ -37,10 +41,11 @@ namespace rebarhickey::text
     std::vector<char> text_before_gap;    
     std::vector<char> text_after_gap;
     std::vector<char> text;
-
+    std::string path;
     std::unique_ptr<Cursor> cursor;
 
   };
+  
 };
 
 #endif

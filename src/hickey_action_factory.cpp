@@ -49,10 +49,7 @@ optional<unique_ptr<HickeyAction>> HickeyActionFactory::next_action(Hickey& hick
     {
       engine.quit();
     }
-  }
 
-  if( hickey_action_optional.has_value() )
-  {
     event_queue.pop();
   }
 

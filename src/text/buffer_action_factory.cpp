@@ -74,9 +74,10 @@ optional<unique_ptr<HickeyAction>> BufferActionFactory::next_action(
 
   if( !event_queue.empty() )
   {
-    optional<InputType> input_type_optional = event_queue.front() -> key_pressed();
+    const std::unique_ptr<InputEvent>& input_event = event_queue.front();
+    optional<InputType> input_type_optional = input_event -> key_pressed();
 
-    if( input_type_optional.has_value() )
+    if( input_type_optional.has_value() && !input_event -> is_control_down() )
     {
       for( const auto& insertion_pair : insertion_types )
       {

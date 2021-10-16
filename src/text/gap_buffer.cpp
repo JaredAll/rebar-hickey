@@ -215,3 +215,13 @@ void GapBuffer::sync_text()
     text.push_back( text_after_gap.at( i ) );
   }
 }
+
+void GapBuffer::set_path( std::string param_path )
+{
+  path = param_path;
+}
+
+std::string GapBuffer::get_path() const
+{
+  return path;
+}

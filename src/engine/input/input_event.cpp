@@ -5,8 +5,10 @@
 using rebarhickey::engine::input::InputEvent;
 using rebarhickey::engine::input::InputType;
 
-InputEvent::InputEvent( InputType current, InputType previous )
-  : current_frame_input( current ), previous_frame_input( previous )
+InputEvent::InputEvent( InputType current, InputType previous, bool param_control_down )
+  : current_frame_input( current ),
+    previous_frame_input( previous ),
+    control_down( param_control_down )
 {}
 
 std::optional<InputType> InputEvent::key_pressed() const
@@ -19,6 +21,11 @@ std::optional<InputType> InputEvent::key_pressed() const
   }
   
   return key_type;
+}
+
+bool InputEvent::is_control_down() const
+{
+  return control_down;
 }
 
 bool InputEvent::escape() const

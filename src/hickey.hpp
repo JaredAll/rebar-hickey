@@ -27,7 +27,7 @@ namespace rebarhickey
 
     std::unique_ptr<GapBuffer> read( const std::string& path );
 
-    void write( const std::string& path, const GapBuffer& gap_buffer );
+    void write( const std::string& path, const GapBuffer& gap_buffer ) const;
 
     std::vector<std::unique_ptr<EditorNode>> nodify( GapBuffer& gap_buffer );
 

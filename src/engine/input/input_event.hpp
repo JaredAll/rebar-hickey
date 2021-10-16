@@ -11,7 +11,9 @@ namespace rebarhickey::engine::input
   {
   public:
 
-    InputEvent( InputType current, InputType previous );
+    InputEvent( InputType current, InputType previous, bool control_down );
+
+    bool is_control_down() const;
 
     std::optional<InputType> key_pressed() const;
 
@@ -21,6 +23,7 @@ namespace rebarhickey::engine::input
 
     InputType current_frame_input;
     InputType previous_frame_input;
+    bool control_down;
 
   };
 
