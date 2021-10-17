@@ -25,6 +25,10 @@ namespace rebarhickey::engine
 
     virtual int get_width() = 0;
 
+    virtual int get_x() = 0;
+
+    virtual int get_y() = 0;
+
     virtual ~HickeyComponent() = default;
 
     virtual void accept_renderer( HickeyRenderer& renderer ) = 0;

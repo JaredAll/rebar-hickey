@@ -4,12 +4,14 @@ using std::make_shared;
 
 using rebarhickey::text::Glyph;
 
-Glyph::Glyph( int param_x,
+Glyph::Glyph( char param_character,
+              int param_x,
               int param_y,
               int param_h,
               int param_w,
               std::shared_ptr<SDL_Texture> param_texture )
-  : x( param_x ),
+  : character( param_character ),
+    x( param_x ),
     y( param_y ),
     h( param_h ),
     w( param_w ),
@@ -42,7 +44,12 @@ void Glyph::set_destination( std::shared_ptr<SDL_Rect> param_destination )
 {
   destination = param_destination;
 }
-  
+
+char Glyph::get_character()
+{
+  return character;
+}
+
 int Glyph::get_x()
 {
   return x;

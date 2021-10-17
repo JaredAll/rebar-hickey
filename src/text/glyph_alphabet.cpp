@@ -4,11 +4,12 @@
 #include "hickey_renderer.hpp"
 #include <exception>
 #include <stdexcept>
+#include <utility>
 
 namespace rebarhickey::text
 {
 
-  GlyphAlphabet::GlyphAlphabet( const engine::HickeyRenderer& renderer )
+  GlyphAlphabet::GlyphAlphabet( engine::HickeyRenderer& renderer )
   {
 
     if( TTF_Init() == -1 )
@@ -30,6 +31,17 @@ namespace rebarhickey::text
 
     SDL_Color white { 255, 255, 255 };
     SDL_Color blue { 100, 100, 255 };
+
+    std::string black_block_path = "/home/jared/rebar-hickey/resources/black_block.png";
+
+    std::pair<char, std::shared_ptr<SDL_Texture>> space_pair =
+      std::make_pair(
+        ' ',
+        renderer.create_texture( black_block_path )
+        );
+
+    alphabet_map.insert( space_pair );
+    selected_alphabet_map.insert( space_pair );
 
     for( const char& character : alphabet_chars )
     {
@@ -90,6 +102,7 @@ namespace rebarhickey::text
   std::unique_ptr<Glyph> GlyphAlphabet::get_char_as_glyph( char character, bool selected )
   {
     return std::make_unique<Glyph>(
+      character,
       0,
       0,
       letter_w,

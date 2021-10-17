@@ -40,7 +40,10 @@ namespace rebarhickey::text
         
   void GlyphNode::accept_renderer( rebarhickey::engine::HickeyRenderer& renderer )
   {
-    renderer.render_component( *glyph );
+    if( glyph -> get_character() != ' ' )
+    {
+      renderer.render_component( *glyph );
+    }
   }
 
   int GlyphNode::get_height()
@@ -51,6 +54,16 @@ namespace rebarhickey::text
   int GlyphNode::get_width()
   {
     return glyph -> get_w();
+  }
+
+  int GlyphNode::get_x()
+  {
+    return glyph -> get_x();
+  }
+
+  int GlyphNode::get_y()
+  {
+    return glyph -> get_y();
   }
 
   int GlyphNode::get_row() const

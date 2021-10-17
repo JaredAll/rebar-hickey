@@ -14,7 +14,7 @@ namespace rebarhickey::text
   {
   public:
 
-    GlyphAlphabet( const engine::HickeyRenderer& );
+    GlyphAlphabet( engine::HickeyRenderer& );
 
     std::unique_ptr<Glyph> get_char_as_glyph( char character, bool selected );
 

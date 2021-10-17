@@ -56,8 +56,10 @@ shared_ptr<SDL_Texture> HickeyRenderer::render_letter_texture( TTF_Font* font,
                                                              char letter_singleton[],
                                                              SDL_Color color ) const
 {
-  shared_ptr<SDL_Surface> letter_surface { TTF_RenderText_Solid( font, letter_singleton, color ),
-    SDL_Surface_Destroyer() };
+  shared_ptr<SDL_Surface> letter_surface {
+    TTF_RenderText_Solid( font, letter_singleton, color ),
+    SDL_Surface_Destroyer()
+  };
   
   shared_ptr<SDL_Texture> letter_texture {
     SDL_CreateTextureFromSurface( renderer.get(), letter_surface.get() ),

@@ -8,6 +8,7 @@
 #include "glyph_node.hpp"
 #include "buffer_action.hpp"
 #include "hickey_action_factory.hpp"
+#include "hickey_highlights.hpp"
 
 using rebarhickey::engine::Engine;
 using rebarhickey::text::GapBuffer;
@@ -37,6 +38,7 @@ namespace rebarhickey
 
     std::unique_ptr<Engine> engine;
     std::unique_ptr<GlyphAlphabet> alphabet;
+    std::unique_ptr<HickeyHighlights> highlights;
     std::unique_ptr<HickeyActionFactory> hickey_action_factory;
     std::unique_ptr<GapBuffer> gap_buffer;
 

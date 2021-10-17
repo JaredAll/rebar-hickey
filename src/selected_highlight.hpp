@@ -1,19 +1,19 @@
-#ifndef REBARHICKEY_GLYPH_H
-#define REBARHICKEY_GLYPH_H
+#ifndef REBARHICKEY_SELECTED_HIGHLIGHT_GLYPH
+#define REBARHICKEY_SELECTED_HIGHLIGHT_GLYPH
 
 #include "SDL_render.h"
 #include "render_component.hpp"
 
 using rebarhickey::engine::RenderComponent;
 
-namespace rebarhickey::text
+namespace rebarhickey
 {
 
-  class Glyph : public RenderComponent
+  class SelectedHighlight : public RenderComponent
   {
   public:
 
-    Glyph( char character, int x, int y, int h, int w, std::shared_ptr<SDL_Texture> texture );
+    SelectedHighlight( int x, int y, int h, int w, std::shared_ptr<SDL_Texture> texture );
 
     std::shared_ptr<SDL_Texture> getTexture() const override;
   
@@ -24,9 +24,7 @@ namespace rebarhickey::text
     void set_clip( std::shared_ptr<SDL_Rect> clip ) override;
   
     void set_destination( std::shared_ptr<SDL_Rect> destination ) override;
-
-    char get_character();
-
+  
     int get_x();
   
     int get_y();
@@ -42,9 +40,7 @@ namespace rebarhickey::text
     void calculate_destination();
 
   private:
-
-    char character;
-
+  
     int x;
     int y;
     int h;

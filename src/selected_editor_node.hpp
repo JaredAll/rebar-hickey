@@ -1,17 +1,17 @@
-#ifndef REBARHICKEY_TEXT_GLYPH_NODE
-#define REBARHICKEY_TEXT_GLYPH_NODE
+#ifndef SELECTED_EDITOR_NODE
+#define SELECTED_EDITOR_NODE
 
 #include "editor_node.hpp"
-#include "glyph.hpp"
+#include "selected_highlight.hpp"
 #include <memory>
 
-namespace rebarhickey::text
+namespace rebarhickey
 {
-  class GlyphNode : public EditorNode
+  class SelectedEditorNode : public EditorNode
   {
   public:
 
-    GlyphNode( int row, int column, std::unique_ptr<Glyph> glyph );
+    SelectedEditorNode( std::unique_ptr<EditorNode>, std::unique_ptr<SelectedHighlight> );
 
     std::vector<std::unique_ptr<EditorNode>> get_sub_nodes() override;
 
@@ -31,21 +31,14 @@ namespace rebarhickey::text
     
     int get_y() override;
     
-    ~GlyphNode() = default;
+    ~SelectedEditorNode() = default;
     
     void accept_renderer( rebarhickey::engine::HickeyRenderer& renderer ) override;
 
-    int get_row() const;
-
-    int get_column() const;
-
-    const std::unique_ptr<Glyph>& get_glyph() const;
-
   private:
 
-    const int row;
-    const int column;
-    const std::unique_ptr<Glyph> glyph;
+    const std::unique_ptr<EditorNode> delegate;
+    const std::unique_ptr<SelectedHighlight> highlight;
 
   };
 }

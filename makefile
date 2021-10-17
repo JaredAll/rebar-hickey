@@ -16,6 +16,9 @@ glyph.o \
 glyph_node.o \
 glyph_alphabet.o \
 hickey.o\
+hickey_highlights.o\
+selected_highlight.o\
+selected_editor_node.o\
 gap_buffer.o\
 cursor.o\
 buffer_insert_action.o\

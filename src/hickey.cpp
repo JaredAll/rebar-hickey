@@ -6,7 +6,10 @@
 #include "glyph_alphabet.hpp"
 #include "glyph_node.hpp"
 #include "hickey_action_factory.hpp"
+#include "hickey_highlights.hpp"
+#include "hickey_renderer.hpp"
 #include "input_event.hpp"
+#include "selected_editor_node.hpp"
 #include <cmath>
 #include <cstddef>
 #include <fstream>
@@ -32,7 +35,10 @@ Hickey::Hickey()
   engine = std::make_unique<Engine>();
   engine -> initialize( 700, 700 );
 
-  alphabet = std::make_unique<GlyphAlphabet>( engine -> get_renderer() );
+  engine::HickeyRenderer& renderer = engine -> get_renderer();
+
+  alphabet = std::make_unique<GlyphAlphabet>( renderer );
+  highlights = std::make_unique<HickeyHighlights>( renderer );  
   hickey_action_factory = std::make_unique<HickeyActionFactory>( *engine );
 }
 
@@ -115,10 +121,6 @@ vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
       row++;
       column = 0;
     }
-    else if( nodified_char == ' ' )
-    {
-      column++;
-    }
     else
     {
       bool selected = false;
@@ -128,11 +130,19 @@ vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
         selected = true;
       }
 
-      std::unique_ptr<GlyphNode> glyph_node = std::make_unique<GlyphNode>(
+      std::unique_ptr<EditorNode> glyph_node = std::make_unique<GlyphNode>(
         row,
         column,
         std::move( alphabet -> get_char_as_glyph( nodified_char, selected ) )
         );
+
+      if( selected )
+      {
+        glyph_node = std::make_unique<SelectedEditorNode>(
+          std::move( glyph_node ),
+          highlights -> get_highlight()
+          );
+      }
 
       glyph_nodes.push_back( std::move( glyph_node ) );
       column++;
