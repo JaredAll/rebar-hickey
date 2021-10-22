@@ -31,7 +31,7 @@ namespace rebarhickey
     void write( const std::string& path, const GapBuffer& gap_buffer ) const;
 
     std::vector<std::unique_ptr<EditorNode>> nodify( GapBuffer& gap_buffer );
-
+    
     GapBuffer& get_current_buffer() const;
 
   private:

@@ -47,6 +47,8 @@ namespace rebarhickey::text
     const int column;
     const std::unique_ptr<Glyph> glyph;
 
+    inline const static std::string whitespace_chars = " \n";
+
   };
 }
 

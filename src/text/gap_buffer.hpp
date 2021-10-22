@@ -2,6 +2,7 @@
 #define JAREDALL_REBAR_HICKEY_BUFFER
 
 #include "cursor.hpp"
+#include "glyph_data.hpp"
 #include <vector>
 
 namespace rebarhickey::text
@@ -18,7 +19,13 @@ namespace rebarhickey::text
 
     std::vector<char> get_text() const;
 
+    std::vector<std::unique_ptr<GlyphData>> to_glyph_data();
+
     Cursor& get_cursor() const;
+    
+    void update_cursor_row( int row_change );
+
+    void update_cursor_column( int column_change );
 
     std::string get_path() const;
 
@@ -35,6 +42,8 @@ namespace rebarhickey::text
     void update_cursor_on_remove( std::vector<char> removed );
 
     int calculate_line_length( int row );
+
+    int calculate_num_rows();
 
     void sync_text();
 

@@ -14,6 +14,7 @@ input_handler.o \
 main.o \
 glyph.o \
 glyph_node.o \
+glyph_data.o \
 glyph_alphabet.o \
 hickey.o\
 hickey_highlights.o\

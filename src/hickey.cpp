@@ -4,6 +4,7 @@
 #include "engine.hpp"
 #include "gap_buffer.hpp"
 #include "glyph_alphabet.hpp"
+#include "glyph_data.hpp"
 #include "glyph_node.hpp"
 #include "hickey_action_factory.hpp"
 #include "hickey_highlights.hpp"
@@ -19,6 +20,7 @@ using rebarhickey::Hickey;
 using rebarhickey::engine::utility::TTF_Font_Destroyer;
 using rebarhickey::text::GlyphAlphabet;
 using rebarhickey::text::Glyph;
+using rebarhickey::text::GlyphData;
 using rebarhickey::text::GlyphNode;
 using rebarhickey::text::BufferAction;
 using rebarhickey::text::Cursor;
@@ -83,6 +85,7 @@ std::unique_ptr<GapBuffer> Hickey::read( const std::string& path )
 
   file_stream.close();
 
+  buffer -> insert( '\n' );
   buffer -> set_path( path );
 
   return buffer;
@@ -105,49 +108,27 @@ void Hickey::write( const std::string& path, const GapBuffer& buffer ) const
 
 vector<std::unique_ptr<EditorNode>> Hickey::nodify( GapBuffer& gap_buffer )
 {
-  vector<char> text = gap_buffer.get_text();
-  int text_length = text.size();
-  vector<std::unique_ptr<EditorNode>> glyph_nodes {};
-
-  int character_count = 0;
-  int row = 0;
-  int column = 0;
-
-  while( character_count < text_length )
+  vector<unique_ptr<EditorNode>> glyph_nodes {};
+  vector<unique_ptr<GlyphData>> glyph_data = gap_buffer.to_glyph_data();
+  for( int i = 0; i < glyph_data.size(); i++ )
   {
-    char nodified_char = text.at( character_count );
-    if( nodified_char == '\n' )
-    {
-      row++;
-      column = 0;
-    }
-    else
-    {
-      bool selected = false;
-      Cursor& cursor = gap_buffer.get_cursor();
-      if( cursor.get_row() == row && cursor.get_column() == column )
-      {
-        selected = true;
-      }
+    unique_ptr<GlyphData>& glyph_datum = glyph_data.at( i );
+    bool selected = glyph_datum -> is_selected();
+    std::unique_ptr<EditorNode> glyph_node = std::make_unique<GlyphNode>(
+      glyph_datum -> get_row(),
+      glyph_datum -> get_column(),
+      std::move( alphabet -> get_char_as_glyph( glyph_datum -> get_character(), selected ) )
+      );
 
-      std::unique_ptr<EditorNode> glyph_node = std::make_unique<GlyphNode>(
-        row,
-        column,
-        std::move( alphabet -> get_char_as_glyph( nodified_char, selected ) )
+    if( selected )
+    {
+      glyph_node = std::make_unique<SelectedEditorNode>(
+        std::move( glyph_node ),
+        highlights -> get_highlight()
         );
-
-      if( selected )
-      {
-        glyph_node = std::make_unique<SelectedEditorNode>(
-          std::move( glyph_node ),
-          highlights -> get_highlight()
-          );
-      }
-
-      glyph_nodes.push_back( std::move( glyph_node ) );
-      column++;
     }
-    character_count++;
+
+    glyph_nodes.push_back( std::move( glyph_node ) );
   }
 
   return glyph_nodes;

@@ -9,7 +9,12 @@ BufferCursorAction::BufferCursorAction( int param_row_change, int param_column_c
     
 void BufferCursorAction::update_buffer( GapBuffer& buffer )
 {
-  Cursor& cursor = buffer.get_cursor();
-  cursor.set_row( cursor.get_row() + row_change );
-  cursor.set_column( cursor.get_column() + column_change );
+  if( row_change != 0 )
+  {
+    buffer.update_cursor_row( row_change );
+  }
+  else if( column_change != 0 )
+  {
+    buffer.update_cursor_column( column_change );
+  }
 }

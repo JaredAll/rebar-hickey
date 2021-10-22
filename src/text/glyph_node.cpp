@@ -40,7 +40,7 @@ namespace rebarhickey::text
         
   void GlyphNode::accept_renderer( rebarhickey::engine::HickeyRenderer& renderer )
   {
-    if( glyph -> get_character() != ' ' )
+    if( whitespace_chars.find( glyph -> get_character() ) == std::string::npos )
     {
       renderer.render_component( *glyph );
     }

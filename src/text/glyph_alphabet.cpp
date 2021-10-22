@@ -34,14 +34,17 @@ namespace rebarhickey::text
 
     std::string black_block_path = "/home/jared/rebar-hickey/resources/black_block.png";
 
-    std::pair<char, std::shared_ptr<SDL_Texture>> space_pair =
+    for( auto& character : whitespace_chars )
+    {
+      std::pair<char, std::shared_ptr<SDL_Texture>> whitespace_pair =
       std::make_pair(
-        ' ',
+        character,
         renderer.create_texture( black_block_path )
         );
 
-    alphabet_map.insert( space_pair );
-    selected_alphabet_map.insert( space_pair );
+      alphabet_map.insert( whitespace_pair );
+      selected_alphabet_map.insert( whitespace_pair );
+    }
 
     for( const char& character : alphabet_chars )
     {
@@ -107,7 +110,8 @@ namespace rebarhickey::text
       0,
       letter_w,
       letter_h,
-      find_letter_texture( character, selected ) );
+      find_letter_texture( character, selected )
+      );
   }
 
   int GlyphAlphabet::get_letter_h()
