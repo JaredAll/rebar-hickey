@@ -55,13 +55,15 @@ BufferActionFactory::BufferActionFactory()
   insertion_types[ InputType::space ]  = ' ';
   insertion_types[ InputType::enter ]  = '\n';
   insertion_types[ InputType::period ] = '.';
-
+ 
   removal_types[ InputType::backspace ] = 1;
 
-  cursor_types[ InputType::up ] = { -1, 0 };
-  cursor_types[ InputType::down ] = { 1, 0 };
-  cursor_types[ InputType::left ] = { 0, -1 };
-  cursor_types[ InputType::right ] = { 0, 1 };
+  cursor_types[ InputType::up ] = [](GapBuffer& buffer){ buffer.update_cursor_row( -1 ); };
+  cursor_types[ InputType::down ] = [](GapBuffer& buffer){ buffer.update_cursor_row( 1 ); };
+  cursor_types[ InputType::left ] = [](GapBuffer& buffer){ buffer.update_cursor_column( -1 ); };
+  cursor_types[ InputType::right ] = [](GapBuffer& buffer){ buffer.update_cursor_column( 1 ); };
+  cursor_types[ InputType::home ] = [](GapBuffer& buffer){ buffer.cursor_home(); };
+  cursor_types[ InputType::end ] = [](GapBuffer& buffer){ buffer.cursor_end(); };
 }
 
 optional<unique_ptr<HickeyAction>> BufferActionFactory::next_action(
@@ -70,7 +72,7 @@ optional<unique_ptr<HickeyAction>> BufferActionFactory::next_action(
   ) {
   optional<char> input_char_optional {};
   optional<int> removal_int_optional {};
-  optional<pair<int, int>> cursor_pair_optional {};
+  optional<std::function<void( GapBuffer& )>> cursor_pair_optional {};
 
   if( !event_queue.empty() )
   {
@@ -116,11 +118,9 @@ optional<unique_ptr<HickeyAction>> BufferActionFactory::next_action(
   }
   else if( cursor_pair_optional.has_value() )
   {
-    std::pair<int, int> cursor_pair = cursor_pair_optional.value();
     action = {
       std::make_unique<BufferCursorAction> (
-        cursor_pair.first,
-        cursor_pair.second
+        cursor_pair_optional.value()
         )
     };
   }

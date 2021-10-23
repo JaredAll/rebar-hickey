@@ -27,6 +27,10 @@ namespace rebarhickey::text
 
     void update_cursor_column( int column_change );
 
+    void cursor_end();
+
+    void cursor_home();
+
     std::string get_path() const;
 
     void set_path( std::string );

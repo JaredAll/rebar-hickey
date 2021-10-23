@@ -40,6 +40,8 @@ namespace rebarhickey::engine::input
     space,
     backspace,
     escape,
+    home,
+    end,
     period,
     none,
   };

@@ -3,6 +3,7 @@
 
 #include "buffer_action.hpp"
 #include "gap_buffer.hpp"
+#include <functional>
 
 namespace rebarhickey::text
 {
@@ -11,7 +12,7 @@ namespace rebarhickey::text
   {
   public:
 
-    BufferCursorAction( int row_change, int column_change );
+    BufferCursorAction( std::function<void( GapBuffer& )> );
     
     ~BufferCursorAction() override = default;
 
@@ -19,8 +20,7 @@ namespace rebarhickey::text
 
   private:
 
-    int row_change;
-    int column_change;
+    std::function<void( GapBuffer& )> buffer_consumer;
 
   };
   

@@ -6,6 +6,7 @@
 #include <memory>
 #include "engine.hpp"
 #include "action_factory.hpp"
+#include <functional>
 
 namespace rebarhickey::text
 {
@@ -26,7 +27,7 @@ namespace rebarhickey::text
     
     std::map<engine::input::InputType, char> insertion_types;
     std::map<engine::input::InputType, int> removal_types;
-    std::map<engine::input::InputType, std::pair<int, int>> cursor_types;
+    std::map<engine::input::InputType, std::function<void( GapBuffer& )>> cursor_types;
   };
 }
 

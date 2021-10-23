@@ -192,6 +192,23 @@ void GapBuffer::update_cursor_column( int column_change )
   cursor -> set_column( new_column );
 }
 
+void GapBuffer::cursor_end()
+{
+  int current_row = cursor -> get_row();
+  int new_column = calculate_line_length( current_row );
+  if( current_row != calculate_num_rows() )
+  {
+    new_column--;
+  }
+
+  cursor -> set_column( new_column );
+}
+
+void GapBuffer::cursor_home()
+{
+  cursor -> set_column( 0 );
+}
+
 int GapBuffer::calculate_cursor_index()
 {
   int index = 0;
@@ -293,21 +310,8 @@ void GapBuffer::update_cursor_on_remove( vector<char> removed )
   
   for( char character : removed )
   {
-    int cursor_row = cursor -> get_row();
-    int cursor_column = cursor -> get_column();
-
-    if( character == '\n' )
-    {
-      row_change--;
-    }
-    else
-    {
-      column_change--;
-    }
-  }
-
-  update_cursor_row( row_change );
-  update_cursor_column( column_change );
+    update_cursor_column( -1 );
+  }  
 }
 
 int GapBuffer::calculate_line_length( int row )
